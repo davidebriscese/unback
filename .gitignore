@@ -1,0 +1,18 @@
+# .NET
+backend/bin/
+backend/obj/
+.vs/
+backend/Models/*.onnx
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/.env*.local
+
+# misc
+*.log
+
+# AI Tools
+AGENTS.md
+CLAUDE.md
+.claude/
