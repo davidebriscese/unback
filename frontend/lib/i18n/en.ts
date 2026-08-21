@@ -123,6 +123,7 @@ export const en = {
   footer: {
     tagline: "Free, open-source background removal.",
     privacy: "Images are processed in memory and never stored.",
+    privacyPolicy: "Privacy",
     model: "Model",
     license: "MIT licence",
     language: "Language",
@@ -132,6 +133,45 @@ export const en = {
     title: "Page not found",
     body: "The page you are looking for doesn't exist or has moved.",
     home: "Back to Unback",
+  },
+
+  privacy: {
+    title: "Privacy",
+    metaDescription:
+      "How Unback handles your images and data: processed in memory, never stored, no account required.",
+    updated: "Last updated: 2026-08-21",
+    intro:
+      "Unback is built so that there is almost nothing to write a privacy policy about. This page explains, plainly, what happens to your images and what little data the service touches.",
+    sections: [
+      {
+        heading: "Your images",
+        body: "Images are uploaded over an encrypted connection, processed entirely in the server's memory, and discarded the moment your result is returned. They are never written to disk, never backed up, never used to train anything, and never seen by anyone.",
+      },
+      {
+        heading: "What the server logs",
+        body: "Requests leave a standard technical trace: image dimensions, processing time and response status. Server logs may include your IP address, which is used only to operate and protect the service. Image content is never logged.",
+      },
+      {
+        heading: "Rate limiting",
+        body: "To keep the service free and fast for everyone, your IP address is held in the server's memory to enforce fair-use limits. These counters are never written to disk and disappear when the service restarts.",
+      },
+      {
+        heading: "Cookies and local storage",
+        body: "Unback sets no cookies. Your browser's local storage keeps a single value — your light/dark theme preference — which never leaves your device.",
+      },
+      {
+        heading: "Analytics",
+        body: "This instance does not run third-party analytics.",
+      },
+      {
+        heading: "Self-hosted instances",
+        body: "This policy covers the official instance at unback.app. Unback is open source, and self-hosted copies are operated independently by their owners.",
+      },
+      {
+        heading: "Questions",
+        body: "Open an issue on GitHub — the project is developed in the open, and so is this policy: any change to it is visible in the repository history.",
+      },
+    ],
   },
 };
 

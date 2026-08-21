@@ -88,6 +88,45 @@ public class StaticFrontendTests
         Assert.Equal(ErrorCodes.NotFound, (await response.Content.ReadFromJsonAsync<ApiError>())!.Code);
     }
 
+    [Fact]
+    public async Task Subpage_without_prefix_serves_the_default_locale()
+    {
+        using var factory = WithFrontend();
+        using var client = factory.CreateClient();
+
+        using var response = await client.GetAsync("/privacy");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Contains("english-privacy-page", await response.Content.ReadAsStringAsync());
+    }
+
+    [Fact]
+    public async Task Localised_subpage_serves_that_locale()
+    {
+        using var factory = WithFrontend();
+        using var client = factory.CreateClient();
+
+        using var response = await client.GetAsync("/it/privacy");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Contains("italian-privacy-page", await response.Content.ReadAsStringAsync());
+    }
+
+    [Theory]
+    [InlineData("/en/privacy", "/privacy")]
+    [InlineData("/privacy/", "/privacy")]
+    [InlineData("/it/privacy/", "/it/privacy")]
+    public async Task Non_canonical_subpage_urls_redirect(string path, string canonical)
+    {
+        using var factory = WithFrontend();
+        using var client = factory.CreateClientWithoutRedirects();
+
+        using var response = await client.GetAsync(path);
+
+        Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
+        Assert.Equal(canonical, response.Headers.Location?.OriginalString);
+    }
+
     /// <summary>Static files are served before the limiter, so page loads never spend API permits.</summary>
     [Fact]
     public async Task Page_loads_do_not_consume_rate_limit_permits()

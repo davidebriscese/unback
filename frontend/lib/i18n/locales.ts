@@ -17,3 +17,12 @@ export const localeInfo: Record<Locale, { nativeName: string; ogLocale: string; 
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
+
+/**
+ * Canonical URL of a page in a locale: the default locale lives at the root ("/", "/privacy"),
+ * every other locale under its prefix ("/it", "/it/privacy").
+ */
+export function localePath(locale: Locale, page = ""): string {
+  const prefix = locale === defaultLocale ? "" : `/${locale}`;
+  return page ? `${prefix}/${page}` : prefix || "/";
+}

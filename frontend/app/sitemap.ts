@@ -1,19 +1,25 @@
 import type { MetadataRoute } from "next";
-import { defaultLocale, localeInfo, locales } from "@/lib/i18n";
+import { defaultLocale, localePath, locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
-
-const alternates = {
-  ...Object.fromEntries(
-    locales.map((locale) => [locale, new URL(localeInfo[locale].path, SITE_URL).toString()]),
-  ),
-  "x-default": new URL(localeInfo[defaultLocale].path, SITE_URL).toString(),
-};
 
 export const dynamic = "force-static";
 
+const pages = ["", "privacy"];
+
+function absolute(path: string): string {
+  return new URL(path, SITE_URL).toString();
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return locales.map((locale) => ({
-    url: new URL(localeInfo[locale].path, SITE_URL).toString(),
-    alternates: { languages: alternates },
-  }));
+  return pages.flatMap((page) => {
+    const languages = {
+      ...Object.fromEntries(locales.map((locale) => [locale, absolute(localePath(locale, page))])),
+      "x-default": absolute(localePath(defaultLocale, page)),
+    };
+
+    return locales.map((locale) => ({
+      url: absolute(localePath(locale, page)),
+      alternates: { languages },
+    }));
+  });
 }

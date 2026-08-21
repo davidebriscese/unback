@@ -119,6 +119,7 @@ export const it: Dictionary = {
   footer: {
     tagline: "Rimozione dello sfondo gratuita e open source.",
     privacy: "Le immagini sono elaborate in memoria e mai salvate.",
+    privacyPolicy: "Privacy",
     model: "Modello",
     license: "Licenza MIT",
     language: "Lingua",
@@ -128,5 +129,44 @@ export const it: Dictionary = {
     title: "Pagina non trovata",
     body: "La pagina che cerchi non esiste o è stata spostata.",
     home: "Torna a Unback",
+  },
+
+  privacy: {
+    title: "Privacy",
+    metaDescription:
+      "Come Unback tratta le tue immagini e i tuoi dati: elaborazione in memoria, nessun salvataggio, nessun account richiesto.",
+    updated: "Ultimo aggiornamento: 2026-08-21",
+    intro:
+      "Unback è costruito in modo che non ci sia quasi nulla su cui scrivere una privacy policy. Questa pagina spiega, in parole semplici, che fine fanno le tue immagini e quali pochi dati tocca il servizio.",
+    sections: [
+      {
+        heading: "Le tue immagini",
+        body: "Le immagini viaggiano su una connessione cifrata, vengono elaborate interamente nella memoria del server e scartate nell'istante in cui ricevi il risultato. Non vengono mai scritte su disco, mai salvate in backup, mai usate per addestrare nulla e mai viste da nessuno.",
+      },
+      {
+        heading: "Cosa registra il server",
+        body: "Le richieste lasciano una normale traccia tecnica: dimensioni dell'immagine, tempo di elaborazione e stato della risposta. I log del server possono includere il tuo indirizzo IP, usato solo per far funzionare e proteggere il servizio. Il contenuto delle immagini non viene mai registrato.",
+      },
+      {
+        heading: "Limiti di utilizzo",
+        body: "Per mantenere il servizio gratuito e veloce per tutti, il tuo indirizzo IP è tenuto nella memoria del server per applicare i limiti di fair use. Questi contatori non vengono mai scritti su disco e spariscono al riavvio del servizio.",
+      },
+      {
+        heading: "Cookie e archiviazione locale",
+        body: "Unback non imposta cookie. La memoria locale del browser conserva un solo valore — la tua preferenza per il tema chiaro o scuro — che non lascia mai il tuo dispositivo.",
+      },
+      {
+        heading: "Analytics",
+        body: "Questa istanza non utilizza analytics di terze parti.",
+      },
+      {
+        heading: "Istanze self-hosted",
+        body: "Questa policy riguarda l'istanza ufficiale su unback.app. Unback è open source e le copie self-hosted sono gestite in autonomia dai rispettivi proprietari.",
+      },
+      {
+        heading: "Domande",
+        body: "Apri una issue su GitHub: il progetto è sviluppato alla luce del sole, e lo è anche questa policy — ogni modifica è visibile nella cronologia del repository.",
+      },
+    ],
   },
 };

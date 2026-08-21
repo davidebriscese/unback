@@ -1,7 +1,7 @@
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { LogoMark } from "@/components/logo";
 import { ModelBadge } from "@/components/model-badge";
-import type { Dictionary, Locale } from "@/lib/i18n";
+import { localePath, type Dictionary, type Locale } from "@/lib/i18n";
 import { GITHUB_URL } from "@/lib/site";
 
 export function SiteFooter({
@@ -31,6 +31,9 @@ export function SiteFooter({
               className="hover:text-foreground"
             >
               {dictionary.license}
+            </a>
+            <a href={localePath(locale, "privacy")} className="hover:text-foreground">
+              {dictionary.privacyPolicy}
             </a>
             <ModelBadge label={dictionary.model} />
           </span>

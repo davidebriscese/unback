@@ -5,10 +5,11 @@ namespace Unback;
 
 /// <summary>
 /// Serves the statically exported frontend out of wwwroot. The export emits one HTML file per
-/// locale (en.html, it.html, …) plus content-hashed assets under _next/static; this maps the
-/// canonical URLs — "/" for the default locale, "/{locale}" for the others — onto those files.
-/// Locales are discovered from the files themselves, so shipping a new language needs no C# change.
-/// Everything self-disables when no export is present, which is the normal state in development.
+/// locale page (en.html, it.html, en/privacy.html, …) plus content-hashed assets under
+/// _next/static; this maps the canonical URLs — "/" and "/privacy" for the default locale,
+/// "/{locale}" and "/{locale}/…" for the others — onto those files. Locales are discovered from
+/// the files themselves, so shipping a new language needs no C# change. Everything self-disables
+/// when no export is present, which is the normal state in development.
 /// </summary>
 public static partial class FrontendHosting
 {
@@ -23,24 +24,31 @@ public static partial class FrontendHosting
             return;
         }
 
+        var files = new PhysicalFileProvider(app.Environment.WebRootPath);
+
         app.Use(async (context, next) =>
         {
             var path = context.Request.Path.Value ?? "/";
 
-            if (path == "/")
+            // One canonical address per page: no trailing slash on extensionless URLs, and the
+            // default locale lives at the root, so its prefixed twin ("/en/…") redirects too.
+            var normalized = path.Length > 1 && path.EndsWith('/') && !path.Contains('.')
+                ? path.TrimEnd('/')
+                : path;
+            var (locale, remainder, explicitPrefix) = SplitLocale(normalized, locales);
+            var canonical = explicitPrefix && locale == DefaultLocale
+                ? (remainder.Length == 0 ? "/" : remainder)
+                : normalized;
+
+            if (canonical != path)
             {
-                context.Request.Path = $"/{DefaultLocale}.html";
+                context.Response.Redirect(canonical + context.Request.QueryString, permanent: true);
+                return;
             }
-            else if (path.Trim('/') is var locale && locales.Contains(locale))
-            {
-                var canonical = locale == DefaultLocale ? "/" : $"/{locale}";
-                if (path != canonical)
-                {
-                    context.Response.Redirect(canonical + context.Request.QueryString, permanent: true);
-                    return;
-                }
-                context.Request.Path = $"/{locale}.html";
-            }
+
+            var candidate = $"{locale}{remainder}.html";
+            if (files.GetFileInfo(candidate).Exists)
+                context.Request.Path = $"/{candidate}";
 
             await next();
         });
@@ -48,7 +56,7 @@ public static partial class FrontendHosting
         app.UseStaticFiles(new StaticFileOptions
         {
             // Bound explicitly: the ambient web-root provider is not always the configured one.
-            FileProvider = new PhysicalFileProvider(app.Environment.WebRootPath),
+            FileProvider = files,
             OnPrepareResponse = context =>
             {
                 var path = context.Context.Request.Path.Value ?? string.Empty;
@@ -84,6 +92,20 @@ public static partial class FrontendHosting
             await context.Response.WriteAsJsonAsync(new ApiError(ErrorCodes.NotFound,
                 "Not found. POST an image to /api/v1/remove — full spec at /openapi/v1.json."));
         }).ExcludeFromDescription();
+    }
+
+    /// <summary>"/it/privacy" → ("it", "/privacy", true); "/privacy" → (default, "/privacy", false).</summary>
+    private static (string Locale, string Remainder, bool ExplicitPrefix) SplitLocale(
+        string path, HashSet<string> locales)
+    {
+        if (path == "/")
+            return (DefaultLocale, string.Empty, false);
+
+        var end = path.IndexOf('/', 1);
+        var first = end < 0 ? path[1..] : path[1..end];
+        return locales.Contains(first)
+            ? (first, end < 0 ? string.Empty : path[end..], true)
+            : (DefaultLocale, path, false);
     }
 
     private static HashSet<string> DiscoverLocales(string? webRootPath)
