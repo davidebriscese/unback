@@ -7,12 +7,12 @@ using SixLabors.ImageSharp.Processing;
 namespace NoBg;
 
 /// <summary>
-/// Rimozione dello sfondo via ONNX Runtime, parametrizzata sul modello (u2net/isnet e simili).
-/// Pre/post-processing replicano rembg: resize all'input del modello, divisione per il pixel
-/// massimo, normalizzazione mean/std; la mappa di salienza in uscita viene normalizzata
-/// min-max e applicata come canale alpha all'immagine originale.
+/// Background removal through ONNX Runtime, parameterised on the model (u2net/isnet and friends).
+/// Pre- and post-processing mirror rembg: resize to the model input, divide by the brightest pixel,
+/// normalise with mean/std; the resulting saliency map is min-max normalised and applied as the
+/// alpha channel of the original image.
 /// </summary>
-public sealed class BackgroundRemover : IDisposable
+public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
 {
     private readonly InferenceSession _session;
     private readonly string _inputName;
@@ -36,7 +36,7 @@ public sealed class BackgroundRemover : IDisposable
         _queueTimeout = queueTimeout;
     }
 
-    /// <summary>Esegue un'inferenza a vuoto per pagare subito il costo di JIT/allocazioni.</summary>
+    /// <summary>Runs one throwaway inference so JIT and allocation costs are paid before serving.</summary>
     public void Warmup()
     {
         using var blank = new Image<Rgba32>(_inputSize, _inputSize);
@@ -46,7 +46,7 @@ public sealed class BackgroundRemover : IDisposable
         RemoveBackground(ms);
     }
 
-    /// <summary>Restituisce null se il server è saturo (coda piena oltre il timeout).</summary>
+    /// <summary>Returns null when the server is saturated (queue full past the timeout).</summary>
     public async Task<byte[]?> TryRemoveBackgroundAsync(Stream imageStream, CancellationToken ct)
     {
         if (!await _gate.WaitAsync(_queueTimeout, ct))
@@ -92,7 +92,7 @@ public sealed class BackgroundRemover : IDisposable
         var pixels = new Rgba32[size * size];
         resized.CopyPixelDataTo(pixels);
 
-        // rembg divide per il valore massimo dei pixel, non per 255
+        // rembg divides by the brightest channel value found, not by 255
         float maxPixel = 0f;
         foreach (var p in pixels)
         {

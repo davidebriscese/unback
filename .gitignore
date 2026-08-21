@@ -1,12 +1,15 @@
 # .NET
-backend/bin/
-backend/obj/
+**/bin/
+**/obj/
 .vs/
 backend/Models/*.onnx
+# Populated from the frontend export at Docker build time
+backend/wwwroot/
 
 # Node / Next.js
 frontend/node_modules/
 frontend/.next/
+frontend/out/
 frontend/.env*.local
 
 # misc
