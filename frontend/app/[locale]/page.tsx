@@ -16,7 +16,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-500/25 via-fuchsia-500/20 to-purple-500/25 blur-3xl"
       />
 
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-16 px-6 py-14">
+      <main id="tool" className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-16 px-6 py-14">
         <section className="flex flex-col gap-8">
           <header className="flex flex-col items-center gap-4 text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">

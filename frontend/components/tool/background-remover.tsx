@@ -28,7 +28,25 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
   const [dragging, setDragging] = useState(false);
   const [background, setBackground] = useState<Background>(null);
   const [preparing, setPreparing] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const inFlight = useRef(false);
+
+  // Track the live object URLs so they can be revoked if the component unmounts mid-session.
+  const liveUrls = useRef<{ original: string | null; result: string | null }>({
+    original: null,
+    result: null,
+  });
+  useEffect(() => {
+    liveUrls.current = { original: originalUrl, result: result?.url ?? null };
+  });
+  useEffect(
+    () => () => {
+      if (liveUrls.current.original) URL.revokeObjectURL(liveUrls.current.original);
+      if (liveUrls.current.result) URL.revokeObjectURL(liveUrls.current.result);
+    },
+    [],
+  );
 
   const describe = useCallback(
     (code: ApiErrorCode, retryAfter?: number) => {
@@ -42,6 +60,10 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
 
   const process = useCallback(
     async (file: File) => {
+      // One image at a time: a paste or drop during processing would race two requests, and the
+      // later setResult would win and revoke the other's URL.
+      if (inFlight.current) return;
+
       const invalid = validateFile(file);
       if (invalid) {
         setError(describe(invalid));
@@ -49,8 +71,10 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
         return;
       }
 
+      inFlight.current = true;
       setStatus("processing");
       setError(null);
+      setDownloadError(null);
       setOriginalUrl((previous) => {
         if (previous) URL.revokeObjectURL(previous);
         return URL.createObjectURL(file);
@@ -72,6 +96,8 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
             : dictionary.errors.unknown,
         );
         setStatus("error");
+      } finally {
+        inFlight.current = false;
       }
     },
     [describe, dictionary],
@@ -102,6 +128,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
     });
     setElapsedMs(null);
     setError(null);
+    setDownloadError(null);
     setBackground(null);
     setStatus("idle");
     if (inputRef.current) inputRef.current.value = "";
@@ -117,11 +144,15 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
     }
 
     setPreparing(true);
+    setDownloadError(null);
     try {
       const composited = await compositePng(result.blob, background);
       const url = URL.createObjectURL(composited);
       save(url);
-      URL.revokeObjectURL(url);
+      // Revoke after the download has surely started; revoking synchronously cancels it in Firefox.
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    } catch {
+      setDownloadError(dictionary.errors.unknown);
     } finally {
       setPreparing(false);
     }
@@ -183,7 +214,10 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
               </button>
 
               {status === "error" && error && (
-                <p className="mt-3 flex items-start gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                <p
+                  role="alert"
+                  className="mt-3 flex items-start gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive"
+                >
                   <CircleAlert className="mt-0.5 size-4 shrink-0" />
                   {error}
                 </p>
@@ -272,6 +306,12 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
               {dictionary.reset}
             </Button>
           </div>
+
+          {downloadError && (
+            <p role="alert" className="text-center text-sm text-destructive">
+              {downloadError}
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -282,5 +322,7 @@ function save(url: string) {
   const anchor = document.createElement("a");
   anchor.href = url;
   anchor.download = "unback.png";
+  document.body.appendChild(anchor);
   anchor.click();
+  anchor.remove();
 }

@@ -127,6 +127,12 @@ export const en = {
     license: "MIT licence",
     language: "Language",
   },
+
+  notFound: {
+    title: "Page not found",
+    body: "The page you are looking for doesn't exist or has moved.",
+    home: "Back to Unback",
+  },
 };
 
 /** Widened on purpose: translations supply their own strings, not these literals. */

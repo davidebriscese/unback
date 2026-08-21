@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
-import { localeInfo, locales } from "@/lib/i18n";
+import { defaultLocale, localeInfo, locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 
-const alternates = Object.fromEntries(
-  locales.map((locale) => [locale, new URL(localeInfo[locale].path, SITE_URL).toString()]),
-);
+const alternates = {
+  ...Object.fromEntries(
+    locales.map((locale) => [locale, new URL(localeInfo[locale].path, SITE_URL).toString()]),
+  ),
+  "x-default": new URL(localeInfo[defaultLocale].path, SITE_URL).toString(),
+};
 
 export const dynamic = "force-static";
 

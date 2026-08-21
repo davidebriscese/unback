@@ -35,6 +35,7 @@ export function BeforeAfterSlider({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.round(position)}
+      aria-valuetext={`${Math.round(position)}%`}
       tabIndex={0}
       className="relative mx-auto cursor-ew-resize touch-none select-none overflow-hidden rounded-2xl border shadow-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       style={
@@ -58,8 +59,17 @@ export function BeforeAfterSlider({
         draggingRef.current = false;
       }}
       onKeyDown={(event) => {
-        if (event.key === "ArrowLeft") setPosition((value) => Math.max(0, value - 5));
-        if (event.key === "ArrowRight") setPosition((value) => Math.min(100, value + 5));
+        const step: Record<string, number> = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5 };
+        if (event.key in step) {
+          event.preventDefault();
+          setPosition((value) => Math.min(100, Math.max(0, value + step[event.key])));
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          setPosition(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          setPosition(100);
+        }
       }}
     >
       <div

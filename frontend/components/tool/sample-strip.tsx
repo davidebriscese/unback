@@ -23,7 +23,13 @@ export function SampleStrip({
             onClick={() => void loadSample(sample.src).then(onPick)}
             className="size-14 overflow-hidden rounded-xl border transition-all hover:scale-105 hover:border-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            <img src={sample.src} alt={alts[sample.id]} className="size-full object-cover" />
+            <img
+              src={sample.src}
+              alt={alts[sample.id]}
+              loading="lazy"
+              decoding="async"
+              className="size-full object-cover"
+            />
           </button>
         ))}
       </div>

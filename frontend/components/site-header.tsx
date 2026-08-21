@@ -15,6 +15,7 @@ export function SiteHeader({ dictionary }: { dictionary: Dictionary["header"] })
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
+            aria-label={dictionary.github}
             className={buttonVariants({ variant: "outline", size: "lg", className: "gap-2" })}
           >
             <GithubMark />

@@ -5,7 +5,8 @@ export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/" }],
+    // The API and the spec are for programs, not crawlers — keep them out of the index.
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/api/", "/openapi/"] }],
     sitemap: new URL("/sitemap.xml", SITE_URL).toString(),
   };
 }

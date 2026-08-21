@@ -22,9 +22,13 @@ export function ApiExample({ labels }: { labels: { copy: string; copied: string 
   const command = `curl -F "file=@photo.jpg" ${origin}/api/v1/remove -o unback.png`;
 
   async function copy() {
-    await navigator.clipboard.writeText(command);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard blocked (insecure context or denied permission): leave the button unchanged.
+    }
   }
 
   return (

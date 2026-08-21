@@ -123,4 +123,10 @@ export const it: Dictionary = {
     license: "Licenza MIT",
     language: "Lingua",
   },
+
+  notFound: {
+    title: "Pagina non trovata",
+    body: "La pagina che cerchi non esiste o è stata spostata.",
+    home: "Torna a Unback",
+  },
 };
