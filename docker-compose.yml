@@ -1,5 +1,5 @@
 services:
-  Unback:
+  unback:
     image: ghcr.io/davidebriscese/unback:latest
     ports:
       - "8080:8080"
