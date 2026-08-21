@@ -124,7 +124,8 @@ Every setting is an environment variable. The `NoBg__` prefix mirrors the JSON s
 | `NoBg__Model__Url` | *(see appsettings)* | Where to fetch it on first start |
 | `NoBg__Model__Sha256` | *(see appsettings)* | Expected checksum. Empty string disables the check |
 | `NoBg__Model__InputSize` | `1024` | Square input resolution the model expects |
-| `ASPNETCORE_URLS` | `http://+:8080` | Listen address |
+| `ASPNETCORE_URLS` | `http://+:8080` | Listen address. Changing the port? Set `HEALTHCHECK_URL` to match |
+| `HEALTHCHECK_URL` | `http://localhost:8080/healthz` | What the container's own health probe requests |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | *(unset)* | See below |
 
 **Behind a reverse proxy**, set `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true` so rate limits key on the
@@ -137,6 +138,9 @@ Named volumes inherit the right ownership from the image and need nothing.
 
 Rate-limit counters live in memory: they reset when the container restarts, and the daily window
 starts at a client's first request rather than at midnight. That is fair-use behaviour, not billing.
+
+If you build the image yourself and care about canonical URLs in the page metadata, pass your own
+domain: `docker build --build-arg NEXT_PUBLIC_SITE_URL=https://example.com .`
 
 ## Models and their licences
 
