@@ -95,6 +95,9 @@ yourself — it is always English.
 | 503 | `server_busy` | Inference queue full; see `Retry-After` |
 | 500 | `internal_error` | Something broke — please open an issue |
 
+A request far beyond the size limit is refused while it is still uploading, so that one answers a
+bare `413` with no body — check the status before parsing.
+
 **Fair use.** A public instance allows 10 requests per minute and 100 per day, per IP address. No key
 is needed, and none is offered: if you need more, run your own instance — that is the whole point.
 
