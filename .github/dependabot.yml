@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  - package-ecosystem: nuget
+    directories:
+      - /backend
+      - /backend.Tests
+    schedule:
+      interval: weekly
+    groups:
+      dotnet:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # Pinned to 3.1.x on purpose: 3.2 moved to a licence this project cannot ship under.
+      - dependency-name: SixLabors.ImageSharp
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+    groups:
+      npm:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly

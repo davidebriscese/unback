@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest something the project should do
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The problem first, please — the solution is easier to judge with it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+
+  - type: checkboxes
+    id: simplicity
+    attributes:
+      label: Fit
+      description: >
+        no-bg deliberately stays small: upload an image, get a transparent PNG, no account.
+      options:
+        - label: I think this fits that scope, or I have explained why it is worth widening it.
+          required: true

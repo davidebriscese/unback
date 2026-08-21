@@ -1,0 +1,55 @@
+name: Bug report
+description: Something does not work as described
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Upload …
+        2. Click …
+        3. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where did you hit it?
+      options:
+        - Web page
+        - API
+        - Self-hosting / Docker
+        - Local development
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The `version` field from `/healthz`, or the image tag you are running.
+
+  - type: textarea
+    id: image-details
+    attributes:
+      label: Image details
+      description: >
+        If a specific image triggers it, its format and pixel size help a lot. Please do not attach
+        anything you would rather not make public.
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or errors
+      description: Container logs, or the browser console.
+      render: shell
