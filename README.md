@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="frontend/public/og.png" alt="Unback — remove image backgrounds in seconds" width="640">
+<img src=".github/assets/demo.gif" alt="Unback removing the background from a portrait photo" width="360">
 
 # Unback
 
@@ -46,7 +46,9 @@ curl -O https://raw.githubusercontent.com/davidebriscese/unback/main/docker-comp
 
 Drop an image, click to pick one, or paste with `Ctrl+V`. You get a before/after slider, an optional
 solid background colour (composited in your browser, so it costs no extra request), and a download
-button. English is at `/`, Italian at `/it`.
+button. English lives at `/`; German, Spanish, French, Italian, Japanese, Portuguese, Russian and
+Chinese live at `/de`, `/es`, `/fr`, `/it`, `/ja`, `/pt`, `/ru` and `/zh`. Adding a language is one
+dictionary file — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## The API
 
