@@ -21,6 +21,7 @@ public static class ErrorCodes
     public const string RateLimited = "rate_limited";
     public const string DailyLimitReached = "daily_limit_reached";
     public const string ServerBusy = "server_busy";
+    public const string Timeout = "timeout";
     public const string NotFound = "not_found";
     public const string InternalError = "internal_error";
 }

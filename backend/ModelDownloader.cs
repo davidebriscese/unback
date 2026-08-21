@@ -45,6 +45,10 @@ public static class ModelDownloader
 
     private static async Task DownloadAsync(string modelPath, ModelOptions model, ILogger logger)
     {
+        if (model.Sha256.Length == 0)
+            logger.LogWarning("No Sha256 configured for model {Name}: the download will not be "
+                + "integrity-checked. Set Unback:Model:Sha256 to verify a custom model.", model.Name);
+
         using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(15) };
         using var response = await http.GetAsync(model.Url, HttpCompletionOption.ResponseHeadersRead);
         response.EnsureSuccessStatusCode();
@@ -56,38 +60,45 @@ public static class ModelDownloader
         var tmpPath = modelPath + ".tmp";
         string hash;
 
-        // Hash while streaming to disk, so verification costs no second read of ~170MB.
-        await using (var body = await response.Content.ReadAsStreamAsync())
-        await using (var file = File.Create(tmpPath))
-        using (var sha = SHA256.Create())
+        try
         {
-            var buffer = new byte[81920];
-            long received = 0;
-            var nextMilestone = 25;
-
-            int read;
-            while ((read = await body.ReadAsync(buffer)) > 0)
+            // Hash while streaming to disk, so verification costs no second read of ~170MB.
+            await using (var body = await response.Content.ReadAsStreamAsync())
+            await using (var file = File.Create(tmpPath))
+            using (var sha = SHA256.Create())
             {
-                await file.WriteAsync(buffer.AsMemory(0, read));
-                sha.TransformBlock(buffer, 0, read, null, 0);
-                received += read;
+                var buffer = new byte[81920];
+                long received = 0;
+                var nextMilestone = 25;
 
-                if (total is { } size && size > 0 && received * 100 / size >= nextMilestone)
+                int read;
+                while ((read = await body.ReadAsync(buffer)) > 0)
                 {
-                    logger.LogInformation("Model download {Percent}%", nextMilestone);
-                    nextMilestone += 25;
+                    await file.WriteAsync(buffer.AsMemory(0, read));
+                    sha.TransformBlock(buffer, 0, read, null, 0);
+                    received += read;
+
+                    if (total is { } size && size > 0 && received * 100 / size >= nextMilestone)
+                    {
+                        logger.LogInformation("Model download {Percent}%", nextMilestone);
+                        nextMilestone += 25;
+                    }
                 }
+
+                sha.TransformFinalBlock([], 0, 0);
+                hash = Convert.ToHexStringLower(sha.Hash!);
             }
 
-            sha.TransformFinalBlock([], 0, 0);
-            hash = Convert.ToHexStringLower(sha.Hash!);
+            if (model.Sha256.Length > 0 && !hash.Equals(model.Sha256, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(
+                    $"Model checksum mismatch: expected {model.Sha256}, got {hash}.");
         }
-
-        if (model.Sha256.Length > 0 && !hash.Equals(model.Sha256, StringComparison.OrdinalIgnoreCase))
+        catch
         {
-            File.Delete(tmpPath);
-            throw new InvalidOperationException(
-                $"Model checksum mismatch: expected {model.Sha256}, got {hash}.");
+            // Never leave a partial or unverified file behind for the next start to trust.
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+            throw;
         }
 
         File.Move(tmpPath, modelPath, overwrite: true);

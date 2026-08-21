@@ -1,6 +1,7 @@
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -21,6 +22,10 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
     private readonly int _inputSize;
     private readonly float[] _mean;
     private readonly float[] _std;
+
+    // A saliency model only needs the first frame; capping frames stops a multi-frame (animated)
+    // upload from expanding past the pixel guard, which only checks a single frame's dimensions.
+    private static readonly DecoderOptions SingleFrame = new() { MaxFrames = 1 };
 
     public string ModelName { get; }
 
@@ -43,7 +48,7 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
         using var ms = new MemoryStream();
         blank.SaveAsPng(ms);
         ms.Position = 0;
-        RemoveBackground(ms);
+        RemoveBackground(ms, CancellationToken.None);
     }
 
     /// <summary>Returns null when the server is saturated (queue full past the timeout).</summary>
@@ -53,7 +58,7 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
             return null;
         try
         {
-            return await Task.Run(() => RemoveBackground(imageStream), ct);
+            return await Task.Run(() => RemoveBackground(imageStream, ct), ct);
         }
         finally
         {
@@ -61,17 +66,22 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
         }
     }
 
-    private byte[] RemoveBackground(Stream imageStream)
+    private byte[] RemoveBackground(Stream imageStream, CancellationToken ct)
     {
-        using var original = Image.Load<Rgba32>(imageStream);
+        using var original = Image.Load<Rgba32>(SingleFrame, imageStream);
         original.Mutate(x => x.AutoOrient());
 
+        // Cheap cancellation checks at the phase boundaries: if the request already timed out or the
+        // client hung up, don't hold the inference gate paying for a result nobody will read.
+        ct.ThrowIfCancellationRequested();
         var inputTensor = Preprocess(original);
 
+        ct.ThrowIfCancellationRequested();
         using var results = _session.Run(
             new[] { NamedOnnxValue.CreateFromTensor(_inputName, inputTensor) });
         var mask = results[0].AsTensor<float>().ToDenseTensor().Buffer.Span;
 
+        ct.ThrowIfCancellationRequested();
         ApplyMaskAsAlpha(original, mask.Slice(0, _inputSize * _inputSize));
 
         using var output = new MemoryStream();

@@ -1,7 +1,10 @@
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.Extensions.Options;
 using Unback;
 using SixLabors.ImageSharp;
@@ -9,7 +12,6 @@ using SixLabors.ImageSharp;
 if (args is ["healthcheck"])
     return await HealthCheck.RunAsync();
 
-const string PerIpPolicy = "per-ip";
 const string InferencePolicy = "inference";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,8 +55,9 @@ builder.Services.AddRateLimiter(limiter =>
         if (retryAfter > 0)
             context.HttpContext.Response.Headers.RetryAfter = retryAfter.ToString();
 
-        // The middleware does not say which limiter rejected the request, but a retry window
-        // longer than the burst window can only have come from the daily one.
+        // The chain evaluates the burst window first, so a retry window longer than it can only be
+        // the daily cap. The one ambiguous case — a daily rejection in the final WindowSeconds of
+        // the 24h window — is cosmetic (wrong message, correct Retry-After) and self-corrects.
         var daily = retryAfter > RateLimitOf(context.HttpContext).WindowSeconds;
         await context.HttpContext.Response.WriteAsJsonAsync(daily
             ? new ApiError(ErrorCodes.DailyLimitReached,
@@ -63,9 +66,13 @@ builder.Services.AddRateLimiter(limiter =>
                 "Too many requests from this address. Try again shortly."), ct);
     };
 
-    // Burst limit, applied to the remove endpoint only.
-    limiter.AddPolicy(PerIpPolicy, context =>
+    // Both tiers apply to /api only. They are chained rather than stacked as a global + endpoint
+    // policy so that a rejection at one tier releases the permit already taken at the other:
+    // burst-rejected requests must not burn the daily quota, and vice versa.
+    var burst = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
+        if (!context.Request.Path.StartsWithSegments("/api"))
+            return RateLimitPartition.GetNoLimiter("none");
         var rateLimit = RateLimitOf(context);
         return RateLimitPartition.GetFixedWindowLimiter(ClientKey(context), _ => new FixedWindowRateLimiterOptions
         {
@@ -75,24 +82,31 @@ builder.Services.AddRateLimiter(limiter =>
         });
     });
 
-    // Daily fair-use cap. The global limiter is the only built-in way to stack a second window on
-    // top of an endpoint policy: two RequireRateLimiting calls do not compose, the last one wins.
-    limiter.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+    var daily = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
-        var dailyLimit = RateLimitOf(context).DailyLimit;
-        return dailyLimit > 0 && context.Request.Path.StartsWithSegments("/api")
-            ? RateLimitPartition.GetFixedWindowLimiter(ClientKey(context), _ => new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = dailyLimit,
-                Window = TimeSpan.FromDays(1),
-                QueueLimit = 0,
-            })
-            : RateLimitPartition.GetNoLimiter("unlimited");
+        var rateLimit = RateLimitOf(context);
+        if (rateLimit.DailyLimit <= 0 || !context.Request.Path.StartsWithSegments("/api"))
+            return RateLimitPartition.GetNoLimiter("none");
+        return RateLimitPartition.GetFixedWindowLimiter(ClientKey(context), _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = rateLimit.DailyLimit,
+            Window = TimeSpan.FromDays(1),
+            QueueLimit = 0,
+        });
     });
+
+    limiter.GlobalLimiter = PartitionedRateLimiter.CreateChained(burst, daily);
 });
 
 builder.Services.AddRequestTimeouts(timeouts =>
-    timeouts.AddPolicy(InferencePolicy, TimeSpan.FromSeconds(startup.RequestTimeoutSeconds)));
+    timeouts.AddPolicy(InferencePolicy, new RequestTimeoutPolicy
+    {
+        Timeout = TimeSpan.FromSeconds(startup.RequestTimeoutSeconds),
+        TimeoutStatusCode = StatusCodes.Status504GatewayTimeout,
+        WriteTimeoutResponse = async context =>
+            await context.Response.WriteAsJsonAsync(new ApiError(ErrorCodes.Timeout,
+                "The request took too long to process. Try a smaller image.")),
+    }));
 
 builder.Services.AddOpenApi(openApi => openApi.AddDocumentTransformer((document, _, _) =>
 {
@@ -138,6 +152,22 @@ app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
         _ => new ApiError(ErrorCodes.InternalError, "Internal server error."),
     });
 }));
+
+// Security headers on every response — the page, the API, the images derived from user uploads.
+// 'unsafe-inline' is required by the static export: the theme script and JSON-LD are inline, and
+// the tool applies inline styles (the comparison clip-path, the gradient). No other host is allowed.
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["Referrer-Policy"] = "no-referrer";
+    headers["X-Frame-Options"] = "DENY";
+    headers.ContentSecurityPolicy =
+        "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; "
+        + "script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; base-uri 'self'; "
+        + "form-action 'self'; frame-ancestors 'none'; object-src 'none'";
+    await next();
+});
 
 // Static assets are served before routing and the rate limiter: the static middleware bows out
 // once an endpoint has been matched (the fallback matches everything), and page loads must never
@@ -234,11 +264,11 @@ app.MapPost("/api/v1/remove", async Task<IResult> (
 .Produces<ApiError>(StatusCodes.Status422UnprocessableEntity)
 .Produces<ApiError>(StatusCodes.Status429TooManyRequests)
 .Produces<ApiError>(StatusCodes.Status503ServiceUnavailable)
+.Produces<ApiError>(StatusCodes.Status504GatewayTimeout)
 .WithTags("Background removal")
 .WithSummary("Remove an image background")
 .WithDescription("Takes one image as multipart/form-data field 'file' and returns the same image "
                  + "as a PNG with a transparent background. Nothing is stored server-side.")
-.RequireRateLimiting(PerIpPolicy)
 .WithRequestTimeout(InferencePolicy)
 .DisableAntiforgery();
 
@@ -247,8 +277,23 @@ app.MapFrontendFallback();
 app.Run();
 return 0;
 
-static string ClientKey(HttpContext context) =>
-    context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+static string ClientKey(HttpContext context)
+{
+    var ip = context.Connection.RemoteIpAddress;
+    if (ip is null)
+        return "unknown";
+
+    // A single client owns a whole IPv6 allocation, so key on the /64 to stop address rotation
+    // from minting fresh rate-limit buckets. IPv4 (and IPv4-mapped) stays keyed on the full address.
+    if (ip.AddressFamily == AddressFamily.InterNetworkV6 && !ip.IsIPv4MappedToIPv6)
+    {
+        var bytes = ip.GetAddressBytes();
+        Array.Clear(bytes, 8, 8);
+        return new IPAddress(bytes).ToString();
+    }
+
+    return ip.ToString();
+}
 
 static RateLimitOptions RateLimitOf(HttpContext context) =>
     context.RequestServices.GetRequiredService<IOptions<UnbackOptions>>().Value.RateLimit;

@@ -36,7 +36,10 @@ public sealed class ModelOptions
     public string Sha256 { get; set; } = string.Empty;
 
     public int InputSize { get; set; } = 1024;
-    public float[] Mean { get; set; } = [0.485f, 0.456f, 0.406f];
+
+    // isnet-general-use is trained with mean 0.5 / std 1 (rembg's IsnetGeneralUseSession). The
+    // u2net family uses the ImageNet mean instead — override these when switching models.
+    public float[] Mean { get; set; } = [0.5f, 0.5f, 0.5f];
     public float[] Std { get; set; } = [1f, 1f, 1f];
 }
 
