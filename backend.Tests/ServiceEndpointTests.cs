@@ -40,4 +40,19 @@ public class ServiceEndpointTests
             .TryGetProperty("image/png", out _));
         Assert.Contains("Unback", document.RootElement.GetProperty("info").GetProperty("title").GetString());
     }
+
+    [Theory]
+    [InlineData("/healthz")]
+    [InlineData("/does-not-exist")]
+    public async Task Security_headers_are_present_on_every_response(string path)
+    {
+        using var factory = new ApiFactory();
+        using var client = factory.CreateClient();
+
+        using var response = await client.GetAsync(path);
+
+        Assert.Equal("nosniff", response.Headers.GetValues("X-Content-Type-Options").Single());
+        Assert.True(response.Headers.Contains("Content-Security-Policy"));
+        Assert.Equal("DENY", response.Headers.GetValues("X-Frame-Options").Single());
+    }
 }

@@ -66,9 +66,11 @@ builder.Services.AddRateLimiter(limiter =>
                 "Too many requests from this address. Try again shortly."), ct);
     };
 
-    // Both tiers apply to /api only. They are chained rather than stacked as a global + endpoint
-    // policy so that a rejection at one tier releases the permit already taken at the other:
-    // burst-rejected requests must not burn the daily quota, and vice versa.
+    // Both tiers apply to /api only, chained rather than stacked as a global + endpoint policy.
+    // Burst is checked first, so a burst rejection short-circuits before the daily permit is ever
+    // taken — the fair-use quota is spent only by requests that clear the burst window. (A daily
+    // rejection still consumes a burst permit, which the fixed window never refunds on dispose;
+    // harmless, since a daily-capped client cannot succeed regardless.)
     var burst = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
         if (!context.Request.Path.StartsWithSegments("/api"))
@@ -137,6 +139,28 @@ builder.Services.AddSingleton<IBackgroundRemover>(sp => sp.GetRequiredService<Ba
 
 var app = builder.Build();
 
+// Security headers on every response — the page, the API, the images derived from user uploads,
+// and the error responses too. Registered first and applied via OnStarting so they survive the
+// Response.Clear() the exception handler performs before writing an error body.
+// 'unsafe-inline' is required by the static export: the theme script and JSON-LD are inline, and
+// the tool applies inline styles (the comparison clip-path, the gradient). No other host is allowed.
+app.Use((context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        var headers = context.Response.Headers;
+        headers["X-Content-Type-Options"] = "nosniff";
+        headers["Referrer-Policy"] = "no-referrer";
+        headers["X-Frame-Options"] = "DENY";
+        headers.ContentSecurityPolicy =
+            "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; "
+            + "script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; base-uri 'self'; "
+            + "form-action 'self'; frame-ancestors 'none'; object-src 'none'";
+        return Task.CompletedTask;
+    });
+    return next();
+});
+
 app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
 {
     var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
@@ -152,22 +176,6 @@ app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
         _ => new ApiError(ErrorCodes.InternalError, "Internal server error."),
     });
 }));
-
-// Security headers on every response — the page, the API, the images derived from user uploads.
-// 'unsafe-inline' is required by the static export: the theme script and JSON-LD are inline, and
-// the tool applies inline styles (the comparison clip-path, the gradient). No other host is allowed.
-app.Use(async (context, next) =>
-{
-    var headers = context.Response.Headers;
-    headers["X-Content-Type-Options"] = "nosniff";
-    headers["Referrer-Policy"] = "no-referrer";
-    headers["X-Frame-Options"] = "DENY";
-    headers.ContentSecurityPolicy =
-        "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; "
-        + "script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; base-uri 'self'; "
-        + "form-action 'self'; frame-ancestors 'none'; object-src 'none'";
-    await next();
-});
 
 // Static assets are served before routing and the rate limiter: the static middleware bows out
 // once an endpoint has been matched (the fallback matches everything), and page loads must never
