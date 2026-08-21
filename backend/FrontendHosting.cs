@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.FileProviders;
 
 namespace NoBg;
@@ -9,7 +10,7 @@ namespace NoBg;
 /// Locales are discovered from the files themselves, so shipping a new language needs no C# change.
 /// Everything self-disables when no export is present, which is the normal state in development.
 /// </summary>
-public static class FrontendHosting
+public static partial class FrontendHosting
 {
     private const string DefaultLocale = "en";
 
@@ -90,10 +91,15 @@ public static class FrontendHosting
         if (string.IsNullOrEmpty(webRootPath) || !Directory.Exists(webRootPath))
             return [];
 
+        // The export also emits 404.html and framework pages such as _not-found.html, so only
+        // BCP-47-shaped names count as locales.
         return Directory.EnumerateFiles(webRootPath, "*.html")
             .Select(Path.GetFileNameWithoutExtension)
             .OfType<string>()
-            .Where(name => name != "404")
+            .Where(name => LocaleName().IsMatch(name))
             .ToHashSet(StringComparer.Ordinal);
     }
+
+    [GeneratedRegex("^[a-z]{2}(-[A-Za-z0-9]{2,8})?$")]
+    private static partial Regex LocaleName();
 }
