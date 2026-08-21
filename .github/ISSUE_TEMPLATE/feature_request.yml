@@ -20,7 +20,7 @@ body:
     attributes:
       label: Fit
       description: >
-        no-bg deliberately stays small: upload an image, get a transparent PNG, no account.
+        Unback deliberately stays small: upload an image, get a transparent PNG, no account.
       options:
         - label: I think this fits that scope, or I have explained why it is worth widening it.
           required: true

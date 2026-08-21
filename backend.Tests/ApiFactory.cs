@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 /// <summary>
 /// Boots the real HTTP pipeline with a stub engine, so tests cover routing, validation, rate

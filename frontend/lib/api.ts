@@ -1,5 +1,5 @@
 /**
- * Client for the no-bg API. In production the app is served by the backend itself, so requests go
+ * Client for the Unback API. In production the app is served by the backend itself, so requests go
  * to the same origin; in development they cross over to the dotnet process.
  */
 const API_BASE =

@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 public class RemoveEndpointTests
 {
@@ -21,7 +21,7 @@ public class RemoveEndpointTests
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("image/png", response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal("no-bg.png", response.Content.Headers.ContentDisposition?.FileName);
+        Assert.Equal("unback.png", response.Content.Headers.ContentDisposition?.FileName);
         Assert.True(response.Headers.CacheControl?.NoStore);
         Assert.Equal(FakeBackgroundRemover.Result, await response.Content.ReadAsByteArrayAsync());
     }
@@ -81,7 +81,7 @@ public class RemoveEndpointTests
     [Fact]
     public async Task Oversized_file_is_rejected()
     {
-        using var factory = new ApiFactory(new() { ["NoBg:MaxUploadBytes"] = "1024" });
+        using var factory = new ApiFactory(new() { ["Unback:MaxUploadBytes"] = "1024" });
         using var client = factory.CreateClient();
 
         using var response = await client.PostAsync(Endpoint, ApiFactory.Upload(new byte[2048]));
@@ -93,7 +93,7 @@ public class RemoveEndpointTests
     [Fact]
     public async Task Image_with_too_many_pixels_is_rejected_before_decoding()
     {
-        using var factory = new ApiFactory(new() { ["NoBg:MaxImagePixels"] = "100" });
+        using var factory = new ApiFactory(new() { ["Unback:MaxImagePixels"] = "100" });
         using var client = factory.CreateClient();
 
         using var response = await client.PostAsync(Endpoint, ApiFactory.Upload(ApiFactory.PngBytes(20, 20)));

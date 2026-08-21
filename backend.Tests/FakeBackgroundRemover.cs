@@ -1,4 +1,4 @@
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 /// <summary>Stands in for the ONNX engine: hands back a canned PNG, or null to feign saturation.</summary>
 public sealed class FakeBackgroundRemover : IBackgroundRemover

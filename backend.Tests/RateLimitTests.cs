@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 public class RateLimitTests
 {
@@ -16,8 +16,8 @@ public class RateLimitTests
     {
         using var factory = new ApiFactory(new()
         {
-            ["NoBg:RateLimit:PermitLimit"] = "2",
-            ["NoBg:RateLimit:WindowSeconds"] = "60",
+            ["Unback:RateLimit:PermitLimit"] = "2",
+            ["Unback:RateLimit:WindowSeconds"] = "60",
         });
         using var client = factory.CreateClient();
 
@@ -37,8 +37,8 @@ public class RateLimitTests
     {
         using var factory = new ApiFactory(new()
         {
-            ["NoBg:RateLimit:PermitLimit"] = "100",
-            ["NoBg:RateLimit:DailyLimit"] = "3",
+            ["Unback:RateLimit:PermitLimit"] = "100",
+            ["Unback:RateLimit:DailyLimit"] = "3",
         });
         using var client = factory.CreateClient();
 
@@ -58,8 +58,8 @@ public class RateLimitTests
     {
         using var factory = new ApiFactory(new()
         {
-            ["NoBg:RateLimit:PermitLimit"] = "100",
-            ["NoBg:RateLimit:DailyLimit"] = "0",
+            ["Unback:RateLimit:PermitLimit"] = "100",
+            ["Unback:RateLimit:DailyLimit"] = "0",
         });
         using var client = factory.CreateClient();
 
@@ -72,8 +72,8 @@ public class RateLimitTests
     {
         using var factory = new ApiFactory(new()
         {
-            ["NoBg:RateLimit:PermitLimit"] = "1",
-            ["NoBg:RateLimit:DailyLimit"] = "1",
+            ["Unback:RateLimit:PermitLimit"] = "1",
+            ["Unback:RateLimit:DailyLimit"] = "1",
         });
         using var client = factory.CreateClient();
 

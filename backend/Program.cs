@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Options;
-using NoBg;
+using Unback;
 using SixLabors.ImageSharp;
 
 if (args is ["healthcheck"])
@@ -14,11 +14,11 @@ const string InferencePolicy = "inference";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<NoBgOptions>(builder.Configuration.GetSection(NoBgOptions.SectionName));
+builder.Services.Configure<UnbackOptions>(builder.Configuration.GetSection(UnbackOptions.SectionName));
 
 // Snapshot for the few knobs Kestrel and the pipeline need before DI exists. Everything reached
 // per request goes through IOptions instead, so configuration stays overridable.
-var startup = builder.Configuration.GetSection(NoBgOptions.SectionName).Get<NoBgOptions>() ?? new NoBgOptions();
+var startup = builder.Configuration.GetSection(UnbackOptions.SectionName).Get<UnbackOptions>() ?? new UnbackOptions();
 
 var version = (Assembly.GetExecutingAssembly()
         .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0")
@@ -96,13 +96,13 @@ builder.Services.AddRequestTimeouts(timeouts =>
 
 builder.Services.AddOpenApi(openApi => openApi.AddDocumentTransformer((document, _, _) =>
 {
-    document.Info.Title = "no-bg API";
+    document.Info.Title = "Unback API";
     document.Info.Version = "v1";
     document.Info.Description =
         "Free background removal. Send an image, get a transparent PNG back — no API key, no signup.\n\n"
         + $"Fair use: {startup.RateLimit.PermitLimit} requests per {startup.RateLimit.WindowSeconds}s and "
         + $"{startup.RateLimit.DailyLimit} per day, per IP address. Rejected requests answer 429 with a "
-        + "Retry-After header. Need more? Self-host: https://github.com/davidebriscese/no-bg";
+        + "Retry-After header. Need more? Self-host: https://github.com/davidebriscese/unback";
     return Task.CompletedTask;
 }));
 
@@ -112,7 +112,7 @@ var modelsDirectory = Path.Combine(builder.Environment.ContentRootPath, "Models"
 // tests override IBackgroundRemover and never touch the concrete type.
 builder.Services.AddSingleton(sp =>
 {
-    var config = sp.GetRequiredService<IOptions<NoBgOptions>>().Value;
+    var config = sp.GetRequiredService<IOptions<UnbackOptions>>().Value;
     return new BackgroundRemover(
         config.Model,
         Path.Combine(modelsDirectory, $"{config.Model.Name}.onnx"),
@@ -151,7 +151,7 @@ app.UseRequestTimeouts();
 
 if (!app.Environment.IsEnvironment("Testing"))
 {
-    var config = app.Services.GetRequiredService<IOptions<NoBgOptions>>().Value;
+    var config = app.Services.GetRequiredService<IOptions<UnbackOptions>>().Value;
     await ModelDownloader.EnsureModelAsync(
         Path.Combine(modelsDirectory, $"{config.Model.Name}.onnx"), config.Model, app.Logger);
 
@@ -169,7 +169,7 @@ app.MapGet("/healthz", (IBackgroundRemover bg) => new HealthResponse("ok", bg.Mo
 app.MapPost("/api/v1/remove", async Task<IResult> (
         IFormFile? file,
         IBackgroundRemover bg,
-        IOptions<NoBgOptions> config,
+        IOptions<UnbackOptions> config,
         HttpContext http) =>
     {
         var options = config.Value;
@@ -215,7 +215,7 @@ app.MapPost("/api/v1/remove", async Task<IResult> (
 
             // Results are user photos: never let a browser or proxy keep them.
             http.Response.Headers.CacheControl = "no-store";
-            return Results.File(png, "image/png", "no-bg.png");
+            return Results.File(png, "image/png", "unback.png");
         }
         catch (UnknownImageFormatException)
         {
@@ -251,6 +251,6 @@ static string ClientKey(HttpContext context) =>
     context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 
 static RateLimitOptions RateLimitOf(HttpContext context) =>
-    context.RequestServices.GetRequiredService<IOptions<NoBgOptions>>().Value.RateLimit;
+    context.RequestServices.GetRequiredService<IOptions<UnbackOptions>>().Value.RateLimit;
 
 public partial class Program;

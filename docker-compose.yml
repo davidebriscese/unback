@@ -1,6 +1,6 @@
 services:
-  no-bg:
-    image: ghcr.io/davidebriscese/no-bg:latest
+  Unback:
+    image: ghcr.io/davidebriscese/unback:latest
     ports:
       - "8080:8080"
     volumes:
@@ -12,7 +12,7 @@ services:
     #   # container is reachable exclusively through a proxy that overwrites the header itself.
     #   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
     #   # Private instance: drop the daily fair-use cap.
-    #   NoBg__RateLimit__DailyLimit: "0"
+    #   Unback__RateLimit__DailyLimit: "0"
 
 volumes:
   models:

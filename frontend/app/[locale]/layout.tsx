@@ -41,7 +41,7 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_URL),
     title: dictionary.meta.title,
     description: dictionary.meta.description,
-    applicationName: "no-bg",
+    applicationName: "Unback",
     alternates: {
       canonical: path,
       languages: {
@@ -51,7 +51,7 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "website",
-      siteName: "no-bg",
+      siteName: "Unback",
       url: path,
       title: dictionary.meta.title,
       description: dictionary.meta.description,
@@ -79,7 +79,7 @@ export default async function LocaleLayout({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "no-bg",
+    name: "Unback",
     url: new URL(localeInfo[locale].path, SITE_URL).toString(),
     description: dictionary.meta.description,
     applicationCategory: "DesignApplication",

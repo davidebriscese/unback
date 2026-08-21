@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 public class StaticFrontendTests
 {
@@ -94,8 +94,8 @@ public class StaticFrontendTests
     {
         using var factory = WithFrontend(new()
         {
-            ["NoBg:RateLimit:PermitLimit"] = "1",
-            ["NoBg:RateLimit:DailyLimit"] = "1",
+            ["Unback:RateLimit:PermitLimit"] = "1",
+            ["Unback:RateLimit:DailyLimit"] = "1",
         });
         using var client = factory.CreateClient();
 

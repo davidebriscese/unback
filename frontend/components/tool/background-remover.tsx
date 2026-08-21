@@ -281,6 +281,6 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
 function save(url: string) {
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = "no-bg.png";
+  anchor.download = "unback.png";
   anchor.click();
 }

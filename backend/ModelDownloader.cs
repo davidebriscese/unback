@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace NoBg;
+namespace Unback;
 
 /// <summary>
 /// Fetches the ONNX model on first start. The model is deliberately not baked into the container

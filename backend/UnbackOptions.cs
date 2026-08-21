@@ -1,8 +1,8 @@
-namespace NoBg;
+namespace Unback;
 
-public sealed class NoBgOptions
+public sealed class UnbackOptions
 {
-    public const string SectionName = "NoBg";
+    public const string SectionName = "Unback";
 
     public ModelOptions Model { get; set; } = new();
 

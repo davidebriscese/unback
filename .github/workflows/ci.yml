@@ -27,9 +27,9 @@ jobs:
           key: nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: nuget-
 
-      - run: dotnet restore no-bg.slnx
-      - run: dotnet build no-bg.slnx -c Release --no-restore
-      - run: dotnet test no-bg.slnx -c Release --no-build
+      - run: dotnet restore unback.slnx
+      - run: dotnet build unback.slnx -c Release --no-restore
+      - run: dotnet test unback.slnx -c Release --no-build
 
   frontend:
     name: Frontend

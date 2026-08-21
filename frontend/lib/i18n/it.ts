@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const it: Dictionary = {
   meta: {
-    title: "no-bg — Rimuovi lo sfondo dalle immagini, gratis",
+    title: "Unback — Rimuovi lo sfondo dalle immagini, gratis",
     description:
       "Rimuovi lo sfondo da qualsiasi immagine in pochi secondi. Gratis, open source, senza registrazione: le immagini sono elaborate in memoria e mai salvate.",
-    ogAlt: "no-bg — rimozione sfondo gratuita",
+    ogAlt: "Unback — rimozione sfondo gratuita",
   },
 
   header: {
@@ -64,7 +64,7 @@ export const it: Dictionary = {
   },
 
   features: {
-    title: "Perché no-bg?",
+    title: "Perché Unback?",
     items: [
       {
         title: "Gratis davvero",
@@ -96,7 +96,7 @@ export const it: Dictionary = {
       {
         question: "È davvero gratis?",
         answer:
-          "Sì. no-bg è open source con licenza MIT e questa istanza è gratuita, con limiti d'uso equi che la mantengono veloce per tutti.",
+          "Sì. Unback è open source con licenza MIT e questa istanza è gratuita, con limiti d'uso equi che la mantengono veloce per tutti.",
       },
       {
         question: "Che fine fanno le mie immagini?",

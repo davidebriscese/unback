@@ -1,4 +1,4 @@
-namespace NoBg;
+namespace Unback;
 
 /// <summary>
 /// Background removal engine. Abstracted so tests can exercise the HTTP surface without

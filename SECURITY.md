@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please report security issues privately through
-[GitHub Security Advisories](https://github.com/davidebriscese/no-bg/security/advisories/new)
+[GitHub Security Advisories](https://github.com/davidebriscese/unback/security/advisories/new)
 rather than opening a public issue. Include what you found, how to reproduce it, and the impact
 you think it has.
 
@@ -12,7 +12,7 @@ credit, unless you prefer otherwise.
 
 ## Supported versions
 
-Fixes land on `main` and in the next `ghcr.io/davidebriscese/no-bg` image. Only the latest image is
+Fixes land on `main` and in the next `ghcr.io/davidebriscese/unback` image. Only the latest image is
 supported — there are no maintenance branches.
 
 ## Scope notes

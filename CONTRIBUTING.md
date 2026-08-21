@@ -24,7 +24,7 @@ on <http://localhost:5210>. The dev server prints its own URL; English is at `/e
 ## Checks before opening a pull request
 
 ```bash
-dotnet test no-bg.slnx
+dotnet test unback.slnx
 ```
 
 ```bash

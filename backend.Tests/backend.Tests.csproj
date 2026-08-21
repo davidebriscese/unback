@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-    <RootNamespace>NoBg.Tests</RootNamespace>
+    <RootNamespace>Unback.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

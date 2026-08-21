@@ -19,7 +19,7 @@ export function ApiExample({ labels }: { labels: { copy: string; copied: string 
   );
   const [copied, setCopied] = useState(false);
 
-  const command = `curl -F "file=@photo.jpg" ${origin}/api/v1/remove -o no-bg.png`;
+  const command = `curl -F "file=@photo.jpg" ${origin}/api/v1/remove -o unback.png`;
 
   async function copy() {
     await navigator.clipboard.writeText(command);

@@ -7,7 +7,7 @@ WORKDIR /src
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ ./
-ARG NEXT_PUBLIC_SITE_URL=https://no-bg.app
+ARG NEXT_PUBLIC_SITE_URL=https://unback.app
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npm run build
 
@@ -24,9 +24,9 @@ RUN dotnet publish -a $TARGETARCH -c Release --no-restore -o /app \
 
 # Debian, not Alpine: ONNX Runtime ships no musl natives.
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
-LABEL org.opencontainers.image.source="https://github.com/davidebriscese/no-bg" \
+LABEL org.opencontainers.image.source="https://github.com/davidebriscese/unback" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.title="no-bg" \
+      org.opencontainers.image.title="Unback" \
       org.opencontainers.image.description="Free, self-hostable background remover"
 
 WORKDIR /app

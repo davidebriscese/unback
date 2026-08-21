@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.FileProviders;
 
-namespace NoBg;
+namespace Unback;
 
 /// <summary>
 /// Serves the statically exported frontend out of wwwroot. The export emits one HTML file per

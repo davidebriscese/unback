@@ -1,4 +1,4 @@
-namespace NoBg;
+namespace Unback;
 
 /// <summary>Body of every non-2xx API response.</summary>
 /// <param name="Code">Stable machine-readable identifier, safe to branch on.</param>

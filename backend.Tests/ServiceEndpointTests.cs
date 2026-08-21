@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Xunit;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 public class ServiceEndpointTests
 {
@@ -38,6 +38,6 @@ public class ServiceEndpointTests
             .TryGetProperty("multipart/form-data", out _));
         Assert.True(operation.GetProperty("responses").GetProperty("200").GetProperty("content")
             .TryGetProperty("image/png", out _));
-        Assert.Contains("no-bg", document.RootElement.GetProperty("info").GetProperty("title").GetString());
+        Assert.Contains("Unback", document.RootElement.GetProperty("info").GetProperty("title").GetString());
     }
 }

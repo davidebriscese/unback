@@ -16,7 +16,7 @@ export function Logo() {
     <span className="flex items-center gap-2 text-lg font-semibold tracking-tight">
       <LogoMark />
       <span>
-        no<span className="text-primary">-bg</span>
+        Un<span className="text-primary">back</span>
       </span>
     </span>
   );

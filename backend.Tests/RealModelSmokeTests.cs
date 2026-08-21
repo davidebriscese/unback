@@ -1,16 +1,16 @@
 using System.Net;
 using Xunit;
 
-namespace NoBg.Tests;
+namespace Unback.Tests;
 
 /// <summary>
-/// Exercises a running instance with the real model. Opt in with NOBG_E2E=1 (and optionally
-/// NOBG_E2E_URL); skipped otherwise, so CI never downloads 170MB of weights.
+/// Exercises a running instance with the real model. Opt in with UNBACK_E2E=1 (and optionally
+/// UNBACK_E2E_URL); skipped otherwise, so CI never downloads 170MB of weights.
 /// </summary>
 public class RealModelSmokeTests
 {
-    private static string? BaseUrl => Environment.GetEnvironmentVariable("NOBG_E2E") == "1"
-        ? Environment.GetEnvironmentVariable("NOBG_E2E_URL") ?? "http://localhost:5210"
+    private static string? BaseUrl => Environment.GetEnvironmentVariable("UNBACK_E2E") == "1"
+        ? Environment.GetEnvironmentVariable("UNBACK_E2E_URL") ?? "http://localhost:5210"
         : null;
 
     [Fact]

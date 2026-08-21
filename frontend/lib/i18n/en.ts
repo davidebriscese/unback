@@ -6,10 +6,10 @@
  */
 export const en = {
   meta: {
-    title: "no-bg — Free AI Background Remover",
+    title: "Unback — Free AI Background Remover",
     description:
       "Remove the background from any image in seconds. Free, open source, no signup — your images are processed in memory and never stored.",
-    ogAlt: "no-bg — free background remover",
+    ogAlt: "Unback — free background remover",
   },
 
   header: {
@@ -68,7 +68,7 @@ export const en = {
   },
 
   features: {
-    title: "Why no-bg?",
+    title: "Why Unback?",
     items: [
       {
         title: "Actually free",
@@ -100,7 +100,7 @@ export const en = {
       {
         question: "Is it really free?",
         answer:
-          "Yes. no-bg is open source under the MIT licence, and this instance is free to use with fair rate limits that keep it fast for everyone.",
+          "Yes. Unback is open source under the MIT licence, and this instance is free to use with fair rate limits that keep it fast for everyone.",
       },
       {
         question: "What happens to my images?",

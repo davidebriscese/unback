@@ -1,16 +1,16 @@
 <div align="center">
 
-<img src="frontend/public/og.png" alt="no-bg — remove image backgrounds in seconds" width="640">
+<img src="frontend/public/og.png" alt="Unback — remove image backgrounds in seconds" width="640">
 
-# no-bg
+# Unback
 
 **Free, open-source background removal. Your images never leave your server.**
 
-[![CI](https://github.com/davidebriscese/no-bg/actions/workflows/ci.yml/badge.svg)](https://github.com/davidebriscese/no-bg/actions/workflows/ci.yml)
-[![Release](https://github.com/davidebriscese/no-bg/actions/workflows/release.yml/badge.svg)](https://github.com/davidebriscese/no-bg/actions/workflows/release.yml)
+[![CI](https://github.com/davidebriscese/unback/actions/workflows/ci.yml/badge.svg)](https://github.com/davidebriscese/unback/actions/workflows/ci.yml)
+[![Release](https://github.com/davidebriscese/unback/actions/workflows/release.yml/badge.svg)](https://github.com/davidebriscese/unback/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Container](https://img.shields.io/badge/ghcr.io-no--bg-1f6feb?logo=docker&logoColor=white)](https://github.com/davidebriscese/no-bg/pkgs/container/no-bg)
-[![Stars](https://img.shields.io/github/stars/davidebriscese/no-bg?style=social)](https://github.com/davidebriscese/no-bg/stargazers)
+[![Container](https://img.shields.io/badge/ghcr.io-unback-1f6feb?logo=docker&logoColor=white)](https://github.com/davidebriscese/unback/pkgs/container/unback)
+[![Stars](https://img.shields.io/github/stars/davidebriscese/Unback?style=social)](https://github.com/davidebriscese/unback/stargazers)
 
 </div>
 
@@ -30,7 +30,7 @@ one container you can run yourself.
 ## Quickstart
 
 ```bash
-docker run -p 8080:8080 -v no-bg-models:/app/Models ghcr.io/davidebriscese/no-bg
+docker run -p 8080:8080 -v unback-models:/app/Models ghcr.io/davidebriscese/unback
 ```
 
 Open <http://localhost:8080>. On first start it downloads the neural network (~170MB) into the
@@ -39,7 +39,7 @@ volume, so later restarts are instant.
 Or with Compose:
 
 ```bash
-curl -O https://raw.githubusercontent.com/davidebriscese/no-bg/main/docker-compose.yml && docker compose up -d
+curl -O https://raw.githubusercontent.com/davidebriscese/Unback/main/docker-compose.yml && docker compose up -d
 ```
 
 ## The web app
@@ -53,7 +53,7 @@ button. English is at `/`, Italian at `/it`.
 One endpoint. Send an image, get a transparent PNG.
 
 ```bash
-curl -F "file=@photo.jpg" http://localhost:8080/api/v1/remove -o no-bg.png
+curl -F "file=@photo.jpg" http://localhost:8080/api/v1/remove -o unback.png
 ```
 
 ```python
@@ -62,7 +62,7 @@ import requests
 with open("photo.jpg", "rb") as photo:
     response = requests.post("http://localhost:8080/api/v1/remove", files={"file": photo})
 response.raise_for_status()
-open("no-bg.png", "wb").write(response.content)
+open("unback.png", "wb").write(response.content)
 ```
 
 ```javascript
@@ -106,24 +106,24 @@ is the machine-readable spec.
 
 ## Self-hosting
 
-Every setting is an environment variable. The `NoBg__` prefix mirrors the JSON structure in
+Every setting is an environment variable. The `Unback__` prefix mirrors the JSON structure in
 [`backend/appsettings.json`](backend/appsettings.json).
 
 | Variable | Default | What it does |
 | --- | --- | --- |
-| `NoBg__RateLimit__PermitLimit` | `10` | Requests per window, per IP |
-| `NoBg__RateLimit__WindowSeconds` | `60` | Length of that window |
-| `NoBg__RateLimit__DailyLimit` | `100` | Requests per 24h, per IP. `0` disables the daily cap |
-| `NoBg__MaxUploadBytes` | `15728640` | Upload size limit |
-| `NoBg__MaxImagePixels` | `25000000` | Pixel cap, to stop decompression bombs |
-| `NoBg__MaxConcurrentInferences` | `2` | Images processed at once; raise it with core count |
-| `NoBg__InferenceQueueTimeoutSeconds` | `10` | How long a request waits for a slot before a 503 |
-| `NoBg__RequestTimeoutSeconds` | `60` | Wall-clock budget per request; raise it on slow hardware |
-| `NoBg__AllowedOrigins__0` | *(unset)* | Lock CORS to specific origins. Unset means any origin |
-| `NoBg__Model__Name` | `isnet-general-use` | Model file name, without `.onnx` |
-| `NoBg__Model__Url` | *(see appsettings)* | Where to fetch it on first start |
-| `NoBg__Model__Sha256` | *(see appsettings)* | Expected checksum. Empty string disables the check |
-| `NoBg__Model__InputSize` | `1024` | Square input resolution the model expects |
+| `Unback__RateLimit__PermitLimit` | `10` | Requests per window, per IP |
+| `Unback__RateLimit__WindowSeconds` | `60` | Length of that window |
+| `Unback__RateLimit__DailyLimit` | `100` | Requests per 24h, per IP. `0` disables the daily cap |
+| `Unback__MaxUploadBytes` | `15728640` | Upload size limit |
+| `Unback__MaxImagePixels` | `25000000` | Pixel cap, to stop decompression bombs |
+| `Unback__MaxConcurrentInferences` | `2` | Images processed at once; raise it with core count |
+| `Unback__InferenceQueueTimeoutSeconds` | `10` | How long a request waits for a slot before a 503 |
+| `Unback__RequestTimeoutSeconds` | `60` | Wall-clock budget per request; raise it on slow hardware |
+| `Unback__AllowedOrigins__0` | *(unset)* | Lock CORS to specific origins. Unset means any origin |
+| `Unback__Model__Name` | `isnet-general-use` | Model file name, without `.onnx` |
+| `Unback__Model__Url` | *(see appsettings)* | Where to fetch it on first start |
+| `Unback__Model__Sha256` | *(see appsettings)* | Expected checksum. Empty string disables the check |
+| `Unback__Model__InputSize` | `1024` | Square input resolution the model expects |
 | `ASPNETCORE_URLS` | `http://+:8080` | Listen address. Changing the port? Set `HEALTHCHECK_URL` to match |
 | `HEALTHCHECK_URL` | `http://localhost:8080/healthz` | What the container's own health probe requests |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | *(unset)* | See below |
@@ -154,10 +154,10 @@ The model is downloaded at runtime, not baked into the image, so swapping it is 
 | [`silueta`](https://github.com/danielgatis/rembg/releases/download/v0.0.0/silueta.onnx) | Apache-2.0 | u2net-sized quality in a smaller file |
 | `BRIA RMBG-1.4` | **CC BY-NC 4.0** | ⚠️ Non-commercial only. Do not use it on a public or commercial instance |
 
-To switch, point `NoBg__Model__Url` and `NoBg__Model__Name` at another file and set
-`NoBg__Model__InputSize`, `NoBg__Model__Mean` and `NoBg__Model__Std` to the values that model was
+To switch, point `Unback__Model__Url` and `Unback__Model__Name` at another file and set
+`Unback__Model__InputSize`, `Unback__Model__Mean` and `Unback__Model__Std` to the values that model was
 trained with — [rembg's session definitions](https://github.com/danielgatis/rembg) are the reference.
-Clear `NoBg__Model__Sha256` (or set the new file's checksum) or startup will reject the download.
+Clear `Unback__Model__Sha256` (or set the new file's checksum) or startup will reject the download.
 
 ## How it works
 
@@ -192,11 +192,11 @@ miss, and the backend picks up the new page on its own.
 
 ## Licences
 
-no-bg is MIT licensed. Its dependencies:
+Unback is MIT licensed. Its dependencies:
 
 - **ONNX Runtime** — MIT.
 - **SixLabors.ImageSharp 3.1.x** — Six Labors Split License 1.0, which grants Apache-2.0 terms when
-  the consuming software is open source. no-bg qualifies, and the dependency is pinned to 3.1.x
+  the consuming software is open source. Unback qualifies, and the dependency is pinned to 3.1.x
   deliberately: later versions changed those terms.
 - **Model weights** — see the table above. The default is Apache-2.0.
 
