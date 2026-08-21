@@ -1,4 +1,4 @@
-export const locales = ["en", "it"] as const;
+export const locales = ["en", "de", "es", "fr", "it", "ja", "pt", "ru", "zh"] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -11,7 +11,14 @@ export const defaultLocale: Locale = "en";
  */
 export const localeInfo: Record<Locale, { nativeName: string; ogLocale: string; path: string }> = {
   en: { nativeName: "English", ogLocale: "en_US", path: "/" },
+  de: { nativeName: "Deutsch", ogLocale: "de_DE", path: "/de" },
+  es: { nativeName: "Español", ogLocale: "es_ES", path: "/es" },
+  fr: { nativeName: "Français", ogLocale: "fr_FR", path: "/fr" },
   it: { nativeName: "Italiano", ogLocale: "it_IT", path: "/it" },
+  ja: { nativeName: "日本語", ogLocale: "ja_JP", path: "/ja" },
+  pt: { nativeName: "Português", ogLocale: "pt_BR", path: "/pt" },
+  ru: { nativeName: "Русский", ogLocale: "ru_RU", path: "/ru" },
+  zh: { nativeName: "中文", ogLocale: "zh_CN", path: "/zh" },
 };
 
 export function isLocale(value: string): value is Locale {

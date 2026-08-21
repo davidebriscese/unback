@@ -1,8 +1,15 @@
+import { de } from "./de";
 import { en, type Dictionary } from "./en";
+import { es } from "./es";
+import { fr } from "./fr";
 import { it } from "./it";
+import { ja } from "./ja";
+import { pt } from "./pt";
+import { ru } from "./ru";
+import { zh } from "./zh";
 import { locales, type Locale } from "./locales";
 
-const dictionaries: Record<Locale, Dictionary> = { en, it };
+const dictionaries: Record<Locale, Dictionary> = { en, de, es, fr, it, ja, pt, ru, zh };
 
 export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];
