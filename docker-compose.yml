@@ -1,0 +1,18 @@
+services:
+  no-bg:
+    image: ghcr.io/davidebriscese/no-bg:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      # The ONNX model (~170MB) is downloaded on first start and kept here.
+      - models:/app/Models
+    restart: unless-stopped
+    # environment:
+    #   # Trust X-Forwarded-For so rate limits key on the real client IP. Only enable this when the
+    #   # container is reachable exclusively through a proxy that overwrites the header itself.
+    #   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+    #   # Private instance: drop the daily fair-use cap.
+    #   NoBg__RateLimit__DailyLimit: "0"
+
+volumes:
+  models:

@@ -1,0 +1,15 @@
+.git
+.github
+.claude
+**/bin
+**/obj
+**/node_modules
+frontend/.next
+frontend/out
+backend/Models
+backend/wwwroot
+backend.Tests
+*.md
+Dockerfile
+.dockerignore
+docker-compose.yml
