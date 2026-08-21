@@ -10,7 +10,7 @@
 [![Release](https://github.com/davidebriscese/unback/actions/workflows/release.yml/badge.svg)](https://github.com/davidebriscese/unback/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Container](https://img.shields.io/badge/ghcr.io-unback-1f6feb?logo=docker&logoColor=white)](https://github.com/davidebriscese/unback/pkgs/container/unback)
-[![Stars](https://img.shields.io/github/stars/davidebriscese/Unback?style=social)](https://github.com/davidebriscese/unback/stargazers)
+[![Stars](https://img.shields.io/github/stars/davidebriscese/unback?style=social)](https://github.com/davidebriscese/unback/stargazers)
 
 </div>
 
@@ -39,7 +39,7 @@ volume, so later restarts are instant.
 Or with Compose:
 
 ```bash
-curl -O https://raw.githubusercontent.com/davidebriscese/Unback/main/docker-compose.yml && docker compose up -d
+curl -O https://raw.githubusercontent.com/davidebriscese/unback/main/docker-compose.yml && docker compose up -d
 ```
 
 ## The web app
@@ -87,16 +87,20 @@ yourself — it is always English.
 | --- | --- | --- |
 | 400 | `missing_file` | No `file` part, or it was empty |
 | 400 | `invalid_image` | The bytes are not a decodable image |
+| 400 | `invalid_request` | Malformed request body |
 | 413 | `file_too_large` | Larger than the configured upload limit |
+| 413 | `payload_too_large` | Beyond the hard limit; rejected by the server before the endpoint |
 | 415 | `unsupported_media_type` | The part is not an `image/*` type |
 | 422 | `too_many_pixels` | Above the configured pixel cap |
 | 429 | `rate_limited` | Per-minute limit; see `Retry-After` |
 | 429 | `daily_limit_reached` | Daily fair-use cap; see `Retry-After` |
 | 503 | `server_busy` | Inference queue full; see `Retry-After` |
+| 504 | `timeout` | Processing exceeded the request budget |
 | 500 | `internal_error` | Something broke — please open an issue |
 
-A request far beyond the size limit is refused while it is still uploading, so that one answers a
-bare `413` with no body — check the status before parsing.
+Unknown routes under `/api` answer `404 not_found`. A request far beyond the size limit may have its
+connection reset mid-upload before any JSON body is readable, so always check the status before
+parsing.
 
 **Fair use.** A public instance allows 10 requests per minute and 100 per day, per IP address. No key
 is needed, and none is offered: if you need more, run your own instance — that is the whole point.
@@ -124,6 +128,8 @@ Every setting is an environment variable. The `Unback__` prefix mirrors the JSON
 | `Unback__Model__Url` | *(see appsettings)* | Where to fetch it on first start |
 | `Unback__Model__Sha256` | *(see appsettings)* | Expected checksum. Empty string disables the check |
 | `Unback__Model__InputSize` | `1024` | Square input resolution the model expects |
+| `Unback__Model__Mean__0..2` | `0.5, 0.5, 0.5` | Per-channel normalization mean the model was trained with |
+| `Unback__Model__Std__0..2` | `1.0, 1.0, 1.0` | Per-channel normalization standard deviation |
 | `ASPNETCORE_URLS` | `http://+:8080` | Listen address. Changing the port? Set `HEALTHCHECK_URL` to match |
 | `HEALTHCHECK_URL` | `http://localhost:8080/healthz` | What the container's own health probe requests |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | *(unset)* | See below |
@@ -139,8 +145,14 @@ Named volumes inherit the right ownership from the image and need nothing.
 Rate-limit counters live in memory: they reset when the container restarts, and the daily window
 starts at a client's first request rather than at midnight. That is fair-use behaviour, not billing.
 
-If you build the image yourself and care about canonical URLs in the page metadata, pass your own
-domain: `docker build --build-arg NEXT_PUBLIC_SITE_URL=https://example.com .`
+**Your own domain and SEO.** The public domain is baked into the page at build time, so the prebuilt
+`:latest` image emits `unback.app` in its canonical URL, sitemap, robots and OG tags. That is
+harmless for personal use, but if you want search engines to index *your* domain, build the image
+yourself with your host:
+
+```bash
+docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your.domain -t unback .
+```
 
 ## Models and their licences
 

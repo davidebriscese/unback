@@ -39,3 +39,6 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      docker:
+        patterns: ["*"]

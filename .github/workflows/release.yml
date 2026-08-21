@@ -55,6 +55,10 @@ jobs:
           build-args: |
             VERSION=${{ steps.version.outputs.value }}
           outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          # Standard hardening for the push-by-digest + imagetools-merge flow: keeps the manifest
+          # list free of unknown/unknown provenance entries.
+          provenance: false
+          sbom: false
           cache-from: type=gha,scope=${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=${{ matrix.arch }}
 
@@ -91,11 +95,14 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE }}
+          # 'latest' tracks the newest release tag (metadata-action's latest=auto), not main —
+          # so self-hosters on :latest run a real release, never a 0.0.0-dev main build. A push to
+          # main only publishes sha-<short>. The first release must be a v* tag.
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
             type=sha,prefix=sha-
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       - name: Merge per-architecture digests into one tag
         working-directory: /tmp/digests
