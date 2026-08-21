@@ -35,6 +35,13 @@ To try the production shape locally, build the frontend, copy `frontend/out/` in
 `backend/wwwroot/` and run the backend on its own: it then serves both the page and the API on one
 origin, exactly like the container does.
 
+If you touched the `Dockerfile`, build the real thing instead — CI does the same on every pull
+request:
+
+```bash
+docker build -t unback:dev . && docker run --rm -p 8080:8080 -v unback-dev-models:/app/Models unback:dev
+```
+
 ## Adding a language
 
 1. Copy `frontend/lib/i18n/en.ts` to `frontend/lib/i18n/<code>.ts` and translate the values.
