@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const es: Dictionary = {
   meta: {
-    title: "Unback — Eliminador de fondos gratuito con IA",
+    title: "Unback - Eliminador de fondos gratuito con IA",
     description:
       "Elimina el fondo de cualquier imagen en segundos. Gratis, de código abierto y sin registro: tus imágenes se procesan en memoria y nunca se guardan.",
-    ogAlt: "Unback — eliminador de fondos gratuito",
+    ogAlt: "Unback - eliminador de fondos gratuito",
   },
 
   header: {
@@ -19,14 +19,14 @@ export const es: Dictionary = {
     titleLead: "Elimina el fondo de tus imágenes",
     titleAccent: "en segundos",
     subtitle:
-      "Sube una foto y obtén un PNG transparente. Sin registro, sin marca de agua, sin créditos — y ninguna imagen se guarda.",
+      "Sube una foto y obtén un PNG transparente. Sin registro, sin marca de agua, sin créditos - y ninguna imagen se guarda.",
   },
 
   tool: {
     dropTitle: "Arrastra una imagen aquí",
     dropHint: "o haz clic para elegir una, o pega con",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG, PNG o WebP — hasta {mb}MB",
+    dropFormats: "JPG, PNG o WebP - hasta {mb}MB",
     samplesLabel: "¿No tienes ninguna a mano? Prueba una de estas:",
     samples: {
       portrait: "Retrato",
@@ -83,7 +83,7 @@ export const es: Dictionary = {
 
   api: {
     title: "Úsalo desde tu código",
-    body: "El endpoint detrás de esta página es una API HTTP normal: envías una imagen y recibes un PNG transparente. Sin clave, sin registro — solo límites de uso justos.",
+    body: "El endpoint detrás de esta página es una API HTTP normal: envías una imagen y recibes un PNG transparente. Sin clave, sin registro - solo límites de uso justos.",
     docsLink: "Referencia de la API",
     githubLink: "Código en GitHub",
     copy: "Copiar",
@@ -153,7 +153,7 @@ export const es: Dictionary = {
       },
       {
         heading: "Cookies y almacenamiento local",
-        body: "Unback no usa cookies. El almacenamiento local de tu navegador guarda un único valor — tu preferencia de tema claro u oscuro — que nunca sale de tu dispositivo.",
+        body: "Unback no usa cookies. El almacenamiento local de tu navegador guarda un único valor - tu preferencia de tema claro u oscuro - que nunca sale de tu dispositivo.",
       },
       {
         heading: "Analítica",
@@ -165,7 +165,7 @@ export const es: Dictionary = {
       },
       {
         heading: "Preguntas",
-        body: "Abre una issue en GitHub: el proyecto se desarrolla en abierto, igual que esta política — cualquier cambio queda visible en el historial del repositorio.",
+        body: "Abre una issue en GitHub: el proyecto se desarrolla en abierto, igual que esta política - cualquier cambio queda visible en el historial del repositorio.",
       },
     ],
   },

@@ -6,10 +6,10 @@
  */
 export const en = {
   meta: {
-    title: "Unback — Free AI Background Remover",
+    title: "Unback - Free AI Background Remover",
     description:
-      "Remove the background from any image in seconds. Free, open source, no signup — your images are processed in memory and never stored.",
-    ogAlt: "Unback — free background remover",
+      "Remove the background from any image in seconds. Free, open source, no signup - your images are processed in memory and never stored.",
+    ogAlt: "Unback - free background remover",
   },
 
   header: {
@@ -23,14 +23,14 @@ export const en = {
     titleLead: "Remove image backgrounds",
     titleAccent: "in seconds",
     subtitle:
-      "Upload a photo, get a transparent PNG. No signup, no watermark, no credits — and no image ever stored.",
+      "Upload a photo, get a transparent PNG. No signup, no watermark, no credits - and no image ever stored.",
   },
 
   tool: {
     dropTitle: "Drop an image here",
     dropHint: "or click to choose one, or paste with",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG, PNG or WebP — up to {mb}MB",
+    dropFormats: "JPG, PNG or WebP - up to {mb}MB",
     samplesLabel: "No image handy? Try one of these:",
     samples: {
       portrait: "Portrait photo",
@@ -50,18 +50,18 @@ export const en = {
     download: "Download PNG",
     preparing: "Preparing…",
     reset: "New image",
-    ready: "Background removed — ready to download.",
+    ready: "Background removed - ready to download.",
     resultAlt: "Image with the background removed",
     originalAlt: "Original image",
     errors: {
       notImage: "That file isn't an image. Use JPG, PNG or WebP.",
-      tooLarge: "Image too large — the limit is {mb}MB.",
-      badImage: "Couldn't read that image — it may be corrupted.",
+      tooLarge: "Image too large - the limit is {mb}MB.",
+      badImage: "Couldn't read that image - it may be corrupted.",
       tooManyPixels: "That image has too many pixels. Try a smaller version.",
       busy: "The server is busy right now. Try again in a moment.",
       busyRetry: "The server is busy right now. Try again in about {s}s.",
       dailyLimit:
-        "You've reached today's fair-use limit. Try again tomorrow, or run your own instance — it's free.",
+        "You've reached today's fair-use limit. Try again tomorrow, or run your own instance - it's free.",
       network: "Can't reach the server. Check that the backend is running.",
       unknown: "Something went wrong. Please try again.",
     },
@@ -87,7 +87,7 @@ export const en = {
 
   api: {
     title: "Use it from your code",
-    body: "The endpoint behind this page is a plain HTTP API: send an image, get a transparent PNG back. No key, no signup — just fair-use rate limits.",
+    body: "The endpoint behind this page is a plain HTTP API: send an image, get a transparent PNG back. No key, no signup - just fair-use rate limits.",
     docsLink: "API reference",
     githubLink: "Source on GitHub",
     copy: "Copy",
@@ -105,7 +105,7 @@ export const en = {
       {
         question: "What happens to my images?",
         answer:
-          "They are processed in memory and discarded as soon as your PNG is returned — never written to disk, never logged, never used to train anything.",
+          "They are processed in memory and discarded as soon as your PNG is returned - never written to disk, never logged, never used to train anything.",
       },
       {
         question: "How does it work?",
@@ -115,7 +115,7 @@ export const en = {
       {
         question: "Can I self-host it?",
         answer:
-          "Yes — it ships as a single Docker image that serves both this page and the API. The README on GitHub has a one-command quickstart.",
+          "Yes - it ships as a single Docker image that serves both this page and the API. The README on GitHub has a one-command quickstart.",
       },
     ],
   },
@@ -157,7 +157,7 @@ export const en = {
       },
       {
         heading: "Cookies and local storage",
-        body: "Unback sets no cookies. Your browser's local storage keeps a single value — your light/dark theme preference — which never leaves your device.",
+        body: "Unback sets no cookies. Your browser's local storage keeps a single value - your light/dark theme preference - which never leaves your device.",
       },
       {
         heading: "Analytics",
@@ -169,7 +169,7 @@ export const en = {
       },
       {
         heading: "Questions",
-        body: "Open an issue on GitHub — the project is developed in the open, and so is this policy: any change to it is visible in the repository history.",
+        body: "Open an issue on GitHub - the project is developed in the open, and so is this policy: any change to it is visible in the repository history.",
       },
     ],
   },

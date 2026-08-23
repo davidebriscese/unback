@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const it: Dictionary = {
   meta: {
-    title: "Unback — Rimuovi lo sfondo dalle immagini, gratis",
+    title: "Unback - Rimuovi lo sfondo dalle immagini, gratis",
     description:
       "Rimuovi lo sfondo da qualsiasi immagine in pochi secondi. Gratis, open source, senza registrazione: le immagini sono elaborate in memoria e mai salvate.",
-    ogAlt: "Unback — rimozione sfondo gratuita",
+    ogAlt: "Unback - rimozione sfondo gratuita",
   },
 
   header: {
@@ -19,14 +19,14 @@ export const it: Dictionary = {
     titleLead: "Rimuovi lo sfondo",
     titleAccent: "in un istante",
     subtitle:
-      "Carica una foto e ottieni un PNG trasparente. Nessuna registrazione, nessuna filigrana, nessun credito da comprare — e nessuna immagine salvata.",
+      "Carica una foto e ottieni un PNG trasparente. Nessuna registrazione, nessuna filigrana, nessun credito da comprare - e nessuna immagine salvata.",
   },
 
   tool: {
     dropTitle: "Trascina qui un'immagine",
     dropHint: "oppure clicca per sceglierla, o incolla con",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG, PNG o WebP — max {mb}MB",
+    dropFormats: "JPG, PNG o WebP - max {mb}MB",
     samplesLabel: "Niente immagini sottomano? Prova una di queste:",
     samples: {
       portrait: "Ritratto",
@@ -153,7 +153,7 @@ export const it: Dictionary = {
       },
       {
         heading: "Cookie e archiviazione locale",
-        body: "Unback non imposta cookie. La memoria locale del browser conserva un solo valore — la tua preferenza per il tema chiaro o scuro — che non lascia mai il tuo dispositivo.",
+        body: "Unback non imposta cookie. La memoria locale del browser conserva un solo valore - la tua preferenza per il tema chiaro o scuro - che non lascia mai il tuo dispositivo.",
       },
       {
         heading: "Analytics",
@@ -165,7 +165,7 @@ export const it: Dictionary = {
       },
       {
         heading: "Domande",
-        body: "Apri una issue su GitHub: il progetto è sviluppato alla luce del sole, e lo è anche questa policy — ogni modifica è visibile nella cronologia del repository.",
+        body: "Apri una issue su GitHub: il progetto è sviluppato alla luce del sole, e lo è anche questa policy - ogni modifica è visibile nella cronologia del repository.",
       },
     ],
   },

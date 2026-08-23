@@ -21,7 +21,7 @@ export async function generateMetadata({
   const dictionary = getDictionary(locale);
 
   return {
-    title: `${dictionary.privacy.title} — Unback`,
+    title: `${dictionary.privacy.title} - Unback`,
     description: dictionary.privacy.metaDescription,
     alternates: {
       canonical: localePath(locale, "privacy"),

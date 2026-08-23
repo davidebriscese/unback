@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const fr: Dictionary = {
   meta: {
-    title: "Unback — Suppression d'arrière-plan gratuite par IA",
+    title: "Unback - Suppression d'arrière-plan gratuite par IA",
     description:
       "Supprimez l'arrière-plan d'une image en quelques secondes. Gratuit, open source, sans inscription : vos images sont traitées en mémoire, jamais conservées.",
-    ogAlt: "Unback — suppression d'arrière-plan gratuite",
+    ogAlt: "Unback - suppression d'arrière-plan gratuite",
   },
 
   header: {
@@ -19,14 +19,14 @@ export const fr: Dictionary = {
     titleLead: "Supprimez l'arrière-plan de vos images",
     titleAccent: "en quelques secondes",
     subtitle:
-      "Importez une photo, récupérez un PNG transparent. Sans inscription, sans filigrane, sans crédits — et aucune image n'est conservée.",
+      "Importez une photo, récupérez un PNG transparent. Sans inscription, sans filigrane, sans crédits - et aucune image n'est conservée.",
   },
 
   tool: {
     dropTitle: "Déposez une image ici",
     dropHint: "ou cliquez pour en choisir une, ou collez avec",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG, PNG ou WebP — jusqu'à {mb} Mo",
+    dropFormats: "JPG, PNG ou WebP - jusqu'à {mb} Mo",
     samplesLabel: "Pas d'image sous la main ? Essayez l'une de celles-ci :",
     samples: {
       portrait: "Portrait",
@@ -46,18 +46,18 @@ export const fr: Dictionary = {
     download: "Télécharger le PNG",
     preparing: "Préparation…",
     reset: "Nouvelle image",
-    ready: "Arrière-plan supprimé — prêt à télécharger.",
+    ready: "Arrière-plan supprimé - prêt à télécharger.",
     resultAlt: "Image sans arrière-plan",
     originalAlt: "Image d'origine",
     errors: {
       notImage: "Ce fichier n'est pas une image. Utilisez un JPG, PNG ou WebP.",
-      tooLarge: "Image trop volumineuse — la limite est de {mb} Mo.",
-      badImage: "Impossible de lire cette image — elle est peut-être corrompue.",
+      tooLarge: "Image trop volumineuse - la limite est de {mb} Mo.",
+      badImage: "Impossible de lire cette image - elle est peut-être corrompue.",
       tooManyPixels: "Cette image compte trop de pixels. Essayez une version plus petite.",
       busy: "Le serveur est occupé pour le moment. Réessayez dans un instant.",
       busyRetry: "Le serveur est occupé pour le moment. Réessayez dans environ {s} s.",
       dailyLimit:
-        "Vous avez atteint la limite d'utilisation du jour. Réessayez demain, ou hébergez votre propre instance — c'est gratuit.",
+        "Vous avez atteint la limite d'utilisation du jour. Réessayez demain, ou hébergez votre propre instance - c'est gratuit.",
       network: "Impossible de joindre le serveur. Vérifiez que le backend est bien lancé.",
       unknown: "Une erreur s'est produite. Veuillez réessayer.",
     },
@@ -83,7 +83,7 @@ export const fr: Dictionary = {
 
   api: {
     title: "Utilisez-le depuis votre code",
-    body: "L'endpoint derrière cette page est une simple API HTTP : vous envoyez une image, vous recevez un PNG transparent. Pas de clé, pas d'inscription — seulement des limites d'usage équitables.",
+    body: "L'endpoint derrière cette page est une simple API HTTP : vous envoyez une image, vous recevez un PNG transparent. Pas de clé, pas d'inscription - seulement des limites d'usage équitables.",
     docsLink: "Référence de l'API",
     githubLink: "Code source sur GitHub",
     copy: "Copier",
@@ -111,7 +111,7 @@ export const fr: Dictionary = {
       {
         question: "Puis-je l'héberger moi-même ?",
         answer:
-          "Oui — il est distribué sous forme d'une seule image Docker qui sert à la fois cette page et l'API. Le README sur GitHub propose un démarrage rapide en une commande.",
+          "Oui - il est distribué sous forme d'une seule image Docker qui sert à la fois cette page et l'API. Le README sur GitHub propose un démarrage rapide en une commande.",
       },
     ],
   },
@@ -153,7 +153,7 @@ export const fr: Dictionary = {
       },
       {
         heading: "Cookies et stockage local",
-        body: "Unback ne dépose aucun cookie. Le stockage local de votre navigateur conserve une seule valeur — votre préférence de thème clair ou sombre — qui ne quitte jamais votre appareil.",
+        body: "Unback ne dépose aucun cookie. Le stockage local de votre navigateur conserve une seule valeur - votre préférence de thème clair ou sombre - qui ne quitte jamais votre appareil.",
       },
       {
         heading: "Mesure d'audience",
@@ -165,7 +165,7 @@ export const fr: Dictionary = {
       },
       {
         heading: "Questions",
-        body: "Ouvrez une issue sur GitHub : le projet est développé au grand jour, et cette politique aussi — toute modification est visible dans l'historique du dépôt.",
+        body: "Ouvrez une issue sur GitHub : le projet est développé au grand jour, et cette politique aussi - toute modification est visible dans l'historique du dépôt.",
       },
     ],
   },

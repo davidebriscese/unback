@@ -4,7 +4,7 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Unback — Free AI Background Remover",
+    name: "Unback - Free AI Background Remover",
     short_name: "Unback",
     description: "Remove the background from any image in seconds. Free, open source, no signup.",
     start_url: "/",

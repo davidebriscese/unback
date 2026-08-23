@@ -11,7 +11,7 @@ const themeScript = `try{var t=localStorage.theme;if(t==="dark"||(!t&&matchMedia
 const dictionary = getDictionary(defaultLocale);
 
 export const metadata: Metadata = {
-  title: `${dictionary.notFound.title} — Unback`,
+  title: `${dictionary.notFound.title} - Unback`,
   description: dictionary.notFound.body,
 };
 
@@ -34,7 +34,7 @@ export default function GlobalNotFound() {
         </span>
         <p className="text-5xl font-bold tracking-tight">404</p>
         <p className="max-w-sm text-muted-foreground">{dictionary.notFound.body}</p>
-        {/* This page bypasses the router, so a plain anchor is correct — next/link would not work. */}
+        {/* This page bypasses the router, so a plain anchor is correct - next/link would not work. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
           href="/"

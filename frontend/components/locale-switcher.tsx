@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 /**
  * A dropdown rather than a row of links: nine languages do not fit a footer line, and a native
  * select cannot be themed. Items stay real anchors, so middle-click and open-in-new-tab work and
- * switching language is a full page load — which is correct when the whole document changes.
+ * switching language is a full page load - which is correct when the whole document changes.
  */
 export function LocaleSwitcher({ active, label }: { active: Locale; label: string }) {
   // Stay on the same page when switching: /it/privacy → /de/privacy. The locale prefix is stripped

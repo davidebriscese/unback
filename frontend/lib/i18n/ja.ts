@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const ja: Dictionary = {
   meta: {
-    title: "Unback — 無料のAI背景削除ツール",
+    title: "Unback - 無料のAI背景削除ツール",
     description:
       "どんな画像も数秒で背景を削除。無料・オープンソース・登録不要。画像はメモリ上で処理され、保存されることは一切ありません。",
-    ogAlt: "Unback — 無料の背景削除ツール",
+    ogAlt: "Unback - 無料の背景削除ツール",
   },
 
   header: {
@@ -19,14 +19,14 @@ export const ja: Dictionary = {
     titleLead: "画像の背景を",
     titleAccent: "数秒で削除",
     subtitle:
-      "写真をアップロードするだけで、透過PNGが手に入ります。登録も、透かしも、クレジットも不要 — 画像が保存されることもありません。",
+      "写真をアップロードするだけで、透過PNGが手に入ります。登録も、透かしも、クレジットも不要 - 画像が保存されることもありません。",
   },
 
   tool: {
     dropTitle: "ここに画像をドロップ",
     dropHint: "またはクリックで選択、貼り付けは",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG・PNG・WebP — 最大{mb}MB",
+    dropFormats: "JPG・PNG・WebP - 最大{mb}MB",
     samplesLabel: "手元に画像がない場合は、こちらをお試しください:",
     samples: {
       portrait: "ポートレート写真",
@@ -83,7 +83,7 @@ export const ja: Dictionary = {
 
   api: {
     title: "コードから使う",
-    body: "このページの裏側にあるのはシンプルなHTTP APIです。画像を送ると透過PNGが返ってきます。キーも登録も不要 — あるのは公平な利用制限だけです。",
+    body: "このページの裏側にあるのはシンプルなHTTP APIです。画像を送ると透過PNGが返ってきます。キーも登録も不要 - あるのは公平な利用制限だけです。",
     docsLink: "APIリファレンス",
     githubLink: "GitHubのソースコード",
     copy: "コピー",

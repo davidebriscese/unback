@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const de: Dictionary = {
   meta: {
-    title: "Unback — Kostenloser KI-Hintergrundentferner",
+    title: "Unback - Kostenloser KI-Hintergrundentferner",
     description:
-      "Entferne den Hintergrund aus jedem Bild in Sekunden. Kostenlos, Open Source, ohne Anmeldung — deine Bilder werden im Speicher verarbeitet und nie gespeichert.",
-    ogAlt: "Unback — kostenloser Hintergrundentferner",
+      "Entferne den Hintergrund aus jedem Bild in Sekunden. Kostenlos, Open Source, ohne Anmeldung - deine Bilder werden im Speicher verarbeitet und nie gespeichert.",
+    ogAlt: "Unback - kostenloser Hintergrundentferner",
   },
 
   header: {
@@ -19,14 +19,14 @@ export const de: Dictionary = {
     titleLead: "Entferne Bildhintergründe",
     titleAccent: "in Sekunden",
     subtitle:
-      "Lade ein Foto hoch und erhalte ein transparentes PNG. Keine Anmeldung, kein Wasserzeichen, keine Credits — und kein Bild wird jemals gespeichert.",
+      "Lade ein Foto hoch und erhalte ein transparentes PNG. Keine Anmeldung, kein Wasserzeichen, keine Credits - und kein Bild wird jemals gespeichert.",
   },
 
   tool: {
     dropTitle: "Zieh ein Bild hierher",
     dropHint: "oder klicke, um eines auszuwählen, oder füge ein mit",
     pasteKey: "Ctrl+V",
-    dropFormats: "JPG, PNG oder WebP — max. {mb}MB",
+    dropFormats: "JPG, PNG oder WebP - max. {mb}MB",
     samplesLabel: "Kein Bild zur Hand? Probier eins von diesen:",
     samples: {
       portrait: "Porträtfoto",
@@ -46,18 +46,18 @@ export const de: Dictionary = {
     download: "PNG herunterladen",
     preparing: "Wird vorbereitet…",
     reset: "Neues Bild",
-    ready: "Hintergrund entfernt — bereit zum Herunterladen.",
+    ready: "Hintergrund entfernt - bereit zum Herunterladen.",
     resultAlt: "Bild mit entferntem Hintergrund",
     originalAlt: "Originalbild",
     errors: {
       notImage: "Diese Datei ist kein Bild. Verwende JPG, PNG oder WebP.",
-      tooLarge: "Bild zu groß — das Limit ist {mb}MB.",
-      badImage: "Das Bild konnte nicht gelesen werden — es ist möglicherweise beschädigt.",
+      tooLarge: "Bild zu groß - das Limit ist {mb}MB.",
+      badImage: "Das Bild konnte nicht gelesen werden - es ist möglicherweise beschädigt.",
       tooManyPixels: "Das Bild hat zu viele Pixel. Versuch es mit einer kleineren Version.",
       busy: "Der Server ist gerade ausgelastet. Versuch es gleich noch einmal.",
       busyRetry: "Der Server ist gerade ausgelastet. Versuch es in etwa {s}s noch einmal.",
       dailyLimit:
-        "Du hast das heutige Fair-Use-Limit erreicht. Versuch es morgen wieder — oder betreib deine eigene Instanz, das ist kostenlos.",
+        "Du hast das heutige Fair-Use-Limit erreicht. Versuch es morgen wieder - oder betreib deine eigene Instanz, das ist kostenlos.",
       network: "Der Server ist nicht erreichbar. Prüfe, ob das Backend läuft.",
       unknown: "Etwas ist schiefgelaufen. Bitte versuch es noch einmal.",
     },
@@ -83,7 +83,7 @@ export const de: Dictionary = {
 
   api: {
     title: "Nutze es aus deinem Code",
-    body: "Der Endpoint hinter dieser Seite ist eine einfache HTTP-API: Bild senden, transparentes PNG zurückbekommen. Kein Schlüssel, keine Anmeldung — nur faire Nutzungslimits.",
+    body: "Der Endpoint hinter dieser Seite ist eine einfache HTTP-API: Bild senden, transparentes PNG zurückbekommen. Kein Schlüssel, keine Anmeldung - nur faire Nutzungslimits.",
     docsLink: "API-Referenz",
     githubLink: "Quellcode auf GitHub",
     copy: "Kopieren",
@@ -96,12 +96,12 @@ export const de: Dictionary = {
       {
         question: "Ist es wirklich kostenlos?",
         answer:
-          "Ja. Unback ist Open Source unter der MIT-Lizenz, und diese Instanz ist kostenlos nutzbar — mit fairen Limits, die sie für alle schnell halten.",
+          "Ja. Unback ist Open Source unter der MIT-Lizenz, und diese Instanz ist kostenlos nutzbar - mit fairen Limits, die sie für alle schnell halten.",
       },
       {
         question: "Was passiert mit meinen Bildern?",
         answer:
-          "Sie werden im Speicher verarbeitet und verworfen, sobald du dein PNG erhältst — nie auf die Festplatte geschrieben, nie geloggt, nie für Training verwendet.",
+          "Sie werden im Speicher verarbeitet und verworfen, sobald du dein PNG erhältst - nie auf die Festplatte geschrieben, nie geloggt, nie für Training verwendet.",
       },
       {
         question: "Wie funktioniert es?",
@@ -111,7 +111,7 @@ export const de: Dictionary = {
       {
         question: "Kann ich es selbst hosten?",
         answer:
-          "Ja — es wird als einzelnes Docker-Image ausgeliefert, das diese Seite und die API zugleich bereitstellt. In der README auf GitHub findest du den Schnellstart mit einem einzigen Befehl.",
+          "Ja - es wird als einzelnes Docker-Image ausgeliefert, das diese Seite und die API zugleich bereitstellt. In der README auf GitHub findest du den Schnellstart mit einem einzigen Befehl.",
       },
     ],
   },
@@ -153,7 +153,7 @@ export const de: Dictionary = {
       },
       {
         heading: "Cookies und lokaler Speicher",
-        body: "Unback setzt keine Cookies. Der lokale Speicher deines Browsers hält genau einen Wert — deine Wahl zwischen hellem und dunklem Theme — und der verlässt dein Gerät nie.",
+        body: "Unback setzt keine Cookies. Der lokale Speicher deines Browsers hält genau einen Wert - deine Wahl zwischen hellem und dunklem Theme - und der verlässt dein Gerät nie.",
       },
       {
         heading: "Analytics",
@@ -165,7 +165,7 @@ export const de: Dictionary = {
       },
       {
         heading: "Fragen",
-        body: "Eröffne ein Issue auf GitHub — das Projekt wird offen entwickelt, und das gilt auch für diese Erklärung: Jede Änderung daran ist in der Historie des Repositorys sichtbar.",
+        body: "Eröffne ein Issue auf GitHub - das Projekt wird offen entwickelt, und das gilt auch für diese Erklärung: Jede Änderung daran ist in der Historie des Repositorys sichtbar.",
       },
     ],
   },

@@ -2,10 +2,10 @@ import type { Dictionary } from "./en";
 
 export const zh: Dictionary = {
   meta: {
-    title: "Unback — 免费 AI 抠图工具",
+    title: "Unback - 免费 AI 抠图工具",
     description:
-      "几秒内去除任意图片的背景。免费、开源、无需注册——图片只在内存中处理,绝不存储。",
-    ogAlt: "Unback — 免费抠图工具",
+      "几秒内去除任意图片的背景。免费、开源、无需注册-图片只在内存中处理,绝不存储。",
+    ogAlt: "Unback - 免费抠图工具",
   },
 
   header: {
@@ -19,7 +19,7 @@ export const zh: Dictionary = {
     titleLead: "去除图片背景",
     titleAccent: "只需几秒",
     subtitle:
-      "上传照片,得到透明 PNG。无需注册,没有水印,不用买点数——图片也绝不会被存储。",
+      "上传照片,得到透明 PNG。无需注册,没有水印,不用买点数-图片也绝不会被存储。",
   },
 
   tool: {
@@ -57,7 +57,7 @@ export const zh: Dictionary = {
       busy: "服务器正忙,请稍后再试。",
       busyRetry: "服务器正忙,请在约 {s} 秒后重试。",
       dailyLimit:
-        "已达到今天的合理使用上限。明天再来,或者自己部署一个实例——完全免费。",
+        "已达到今天的合理使用上限。明天再来,或者自己部署一个实例-完全免费。",
       network: "无法连接服务器。请检查后端是否已启动。",
       unknown: "出了点问题,请重试。",
     },
@@ -101,7 +101,7 @@ export const zh: Dictionary = {
       {
         question: "我的图片会怎么处理?",
         answer:
-          "图片只在内存中处理,PNG 一返回就立刻丢弃——从不写入磁盘,从不记入日志,也从不用于训练任何模型。",
+          "图片只在内存中处理,PNG 一返回就立刻丢弃-从不写入磁盘,从不记入日志,也从不用于训练任何模型。",
       },
       {
         question: "它是怎么工作的?",
@@ -153,7 +153,7 @@ export const zh: Dictionary = {
       },
       {
         heading: "Cookie 与本地存储",
-        body: "Unback 不设置任何 Cookie。浏览器的本地存储只保存一个值——你的浅色/深色主题偏好——它永远不会离开你的设备。",
+        body: "Unback 不设置任何 Cookie。浏览器的本地存储只保存一个值-你的浅色/深色主题偏好-它永远不会离开你的设备。",
       },
       {
         heading: "统计分析",

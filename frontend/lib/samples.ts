@@ -1,6 +1,6 @@
 /**
  * Bundled demo photos, so the tool can be tried without hunting for a file.
- * Unsplash License — credits in the repository README.
+ * Unsplash License - credits in the repository README.
  */
 export const samples = [
   { id: "portrait", src: "/samples/portrait.jpg" },
