@@ -2,7 +2,9 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    # Tags only, because arm64 runners are free on public repositories but billed on private ones.
+    # Once this repository is public, add `branches: [main]` back to also publish a sha-tagged
+    # image for every commit.
     tags: ["v*"]
 
 permissions:
