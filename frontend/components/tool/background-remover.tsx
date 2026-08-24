@@ -7,6 +7,7 @@ import { BeforeAfterSlider } from "@/components/tool/before-after-slider";
 import { SampleStrip } from "@/components/tool/sample-strip";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { trackEvent } from "@/lib/analytics";
 import {
   ApiError,
   MAX_UPLOAD_MB,
@@ -18,6 +19,9 @@ import { compositePng } from "@/lib/composite";
 import { t, type Dictionary } from "@/lib/i18n";
 
 type Status = "idle" | "processing" | "done" | "error";
+
+/** Which control produced the image. Reported to analytics so the four entry points can be compared. */
+type Source = "upload" | "paste" | "drop" | "sample";
 
 export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool"] }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -59,7 +63,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
   );
 
   const process = useCallback(
-    async (file: File) => {
+    async (file: File, source: Source) => {
       // One image at a time: a paste or drop during processing would race two requests, and the
       // later setResult would win and revoke the other's URL.
       if (inFlight.current) return;
@@ -68,9 +72,11 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
       if (invalid) {
         setError(describe(invalid));
         setStatus("error");
+        trackEvent("background_remove_failed", { source, reason: invalid });
         return;
       }
 
+      trackEvent("image_selected", { source });
       inFlight.current = true;
       setStatus("processing");
       setError(null);
@@ -87,15 +93,19 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
           if (previous) URL.revokeObjectURL(previous.url);
           return { blob, url: URL.createObjectURL(blob) };
         });
-        setElapsedMs(Math.round(performance.now() - started));
+        const elapsed = Math.round(performance.now() - started);
+        setElapsedMs(elapsed);
         setStatus("done");
+        trackEvent("background_removed", { source, duration_ms: elapsed });
       } catch (thrown) {
+        const reason: ApiErrorCode = thrown instanceof ApiError ? thrown.code : "unknown";
         setError(
           thrown instanceof ApiError
-            ? describe(thrown.code, thrown.retryAfter)
+            ? describe(reason, thrown.retryAfter)
             : dictionary.errors.unknown,
         );
         setStatus("error");
+        trackEvent("background_remove_failed", { source, reason });
       } finally {
         inFlight.current = false;
       }
@@ -110,7 +120,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
       );
       if (file) {
         event.preventDefault();
-        void process(file);
+        void process(file, "paste");
       }
     };
     window.addEventListener("paste", onPaste);
@@ -140,6 +150,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
     // Transparent downloads hand back exactly what the API produced; a colour is composited here.
     if (!background) {
       save(result.url);
+      trackEvent("result_downloaded", { background: "transparent" });
       return;
     }
 
@@ -149,6 +160,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
       const composited = await compositePng(result.blob, background);
       const url = URL.createObjectURL(composited);
       save(url);
+      trackEvent("result_downloaded", { background: describeBackground(background) });
       // Revoke after the download has surely started; revoking synchronously cancels it in Firefox.
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
     } catch {
@@ -167,7 +179,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
         className="hidden"
         onChange={(event) => {
           const file = event.target.files?.[0];
-          if (file) void process(file);
+          if (file) void process(file, "upload");
         }}
       />
 
@@ -191,7 +203,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
                   event.preventDefault();
                   setDragging(false);
                   const file = event.dataTransfer.files?.[0];
-                  if (file) void process(file);
+                  if (file) void process(file, "drop");
                 }}
                 className={`flex min-h-72 w-full cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed p-10 text-center transition-all ${
                   dragging
@@ -228,7 +240,7 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
           <SampleStrip
             label={dictionary.samplesLabel}
             alts={dictionary.samples}
-            onPick={(file) => void process(file)}
+            onPick={(file) => void process(file, "sample")}
           />
         </>
       )}
@@ -316,6 +328,13 @@ export function BackgroundRemover({ dictionary }: { dictionary: Dictionary["tool
       )}
     </div>
   );
+}
+
+/** Buckets the picked colour: the exact hex is a fingerprinting signal and tells us nothing extra. */
+function describeBackground(background: string): string {
+  if (background === "#ffffff") return "white";
+  if (background === "#111111") return "black";
+  return "custom";
 }
 
 function save(url: string) {

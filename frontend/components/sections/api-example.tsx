@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 import { SITE_URL } from "@/lib/site";
 
 const noopSubscribe = () => () => {};
@@ -25,6 +26,7 @@ export function ApiExample({ labels }: { labels: { copy: string; copied: string 
     try {
       await navigator.clipboard.writeText(command);
       setCopied(true);
+      trackEvent("api_snippet_copied");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Clipboard blocked (insecure context or denied permission): leave the button unchanged.

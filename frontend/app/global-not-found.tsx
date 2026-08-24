@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Analytics } from "@/components/analytics";
 import { getDictionary, defaultLocale } from "@/lib/i18n";
 import "./globals.css";
 
@@ -42,6 +43,7 @@ export default function GlobalNotFound() {
         >
           {dictionary.notFound.home}
         </a>
+        <Analytics />
       </body>
     </html>
   );

@@ -2,7 +2,7 @@
  * Client for the Unback API. In production the app is served by the backend itself, so requests go
  * to the same origin; in development they cross over to the dotnet process.
  */
-const API_BASE =
+export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "development" ? "http://localhost:5210" : "");
 
