@@ -6,6 +6,8 @@
 **/node_modules
 frontend/.next
 frontend/out
+# Never bake a developer's local API base or site URL into the image.
+frontend/.env*
 backend/Models
 backend/wwwroot
 backend.Tests
