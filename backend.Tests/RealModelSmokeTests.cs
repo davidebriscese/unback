@@ -40,5 +40,9 @@ public class RealModelSmokeTests
         // A real cut-out has both transparent and opaque pixels; a failed one is uniformly opaque.
         Assert.Contains((byte)0, alphas);
         Assert.True(alphas.Count > 2, "the alpha channel should vary across the image");
+
+        // Without the alpha levels pass the subject peaks around 250 and never reaches 255, which
+        // is what makes a cut-out look see-through against a light background.
+        Assert.Contains((byte)255, alphas);
     }
 }

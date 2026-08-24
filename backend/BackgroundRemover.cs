@@ -11,7 +11,8 @@ namespace Unback;
 /// Background removal through ONNX Runtime, parameterised on the model (u2net/isnet and friends).
 /// Pre- and post-processing mirror rembg: resize to the model input, divide by the brightest pixel,
 /// normalise with mean/std; the resulting saliency map is min-max normalised and applied as the
-/// alpha channel of the original image.
+/// alpha channel of the original image. One deviation: the map then goes through an alpha levels
+/// pass, because rembg's raw output leaves the middle of the subject translucent.
 /// </summary>
 public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
 {
@@ -22,6 +23,8 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
     private readonly int _inputSize;
     private readonly float[] _mean;
     private readonly float[] _std;
+    private readonly float _alphaFloor;
+    private readonly float _alphaSpan;
 
     // A saliency model only needs the first frame; capping frames stops a multi-frame (animated)
     // upload from expanding past the pixel guard, which only checks a single frame's dimensions.
@@ -35,6 +38,9 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
         _inputSize = model.InputSize;
         _mean = model.Mean;
         _std = model.Std;
+        // An inverted or empty range is a config mistake; fall back to the untouched map.
+        var span = model.AlphaCeiling - model.AlphaFloor;
+        (_alphaFloor, _alphaSpan) = span > 0f ? (model.AlphaFloor, span) : (0f, 1f);
         _session = new InferenceSession(modelPath);
         _inputName = _session.InputMetadata.Keys.First();
         _gate = new SemaphoreSlim(maxConcurrentInferences, maxConcurrentInferences);
@@ -134,10 +140,14 @@ public sealed class BackgroundRemover : IBackgroundRemover, IDisposable
         float range = max - min;
         if (range <= 0f) range = 1f;
 
+        // Levels are applied before the upscale so the resampler smooths the corrected mask, not
+        // the raw one - otherwise the ramp it interpolates would put the translucency straight back.
         var normalized = new byte[mask.Length];
         for (int i = 0; i < normalized.Length; i++)
         {
-            normalized[i] = (byte)Math.Clamp((mask[i] - min) / range * 255f, 0f, 255f);
+            var confidence = (mask[i] - min) / range;
+            var alpha = (confidence - _alphaFloor) / _alphaSpan;
+            normalized[i] = (byte)Math.Clamp(alpha * 255f, 0f, 255f);
         }
 
         using var maskImage = Image.LoadPixelData<L8>(normalized, size, size);

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/assets/demo.gif" alt="Unback removing the background from a portrait photo" width="360">
+<img src=".github/assets/demo.gif" alt="Unback removing the background from a photo of a trainer" width="360">
 
 # Unback
 
@@ -132,6 +132,8 @@ Every setting is an environment variable. The `Unback__` prefix mirrors the JSON
 | `Unback__Model__InputSize` | `1024` | Square input resolution the model expects |
 | `Unback__Model__Mean__0..2` | `0.5, 0.5, 0.5` | Per-channel normalization mean the model was trained with |
 | `Unback__Model__Std__0..2` | `1.0, 1.0, 1.0` | Per-channel normalization standard deviation |
+| `Unback__Model__AlphaFloor` | `0.15` | Saliency below this reads as background |
+| `Unback__Model__AlphaCeiling` | `0.55` | Saliency above this reads as solid subject. `0`/`1` disables the pass |
 | `ASPNETCORE_URLS` | `http://+:8080` | Listen address. Changing the port? Set `HEALTHCHECK_URL` to match |
 | `HEALTHCHECK_URL` | `http://localhost:8080/healthz` | What the container's own health probe requests |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | *(unset)* | See below |
@@ -181,8 +183,15 @@ browser ──► Kestrel ──┬──► static export (wwwroot)   the page,
                               │
                               ├─ header-only decode: reject bombs before allocating
                               ├─ resize to the model input, normalise, run ONNX Runtime
-                              └─ min-max the saliency map into the alpha channel, encode PNG
+                              ├─ min-max the saliency map, then stretch it between the alpha levels
+                              └─ upscale it into the alpha channel, encode PNG
 ```
+
+The levels step is the one place Unback departs from rembg. The model is only ever *confident* about
+the subject, never certain, so its raw map leaves the middle of a low-contrast subject — a grey
+jumper on a grey wall — sitting around 85% opaque, which reads as a see-through cut-out. Clamping
+everything above `AlphaCeiling` to solid fixes that; keeping a ramp below it is what leaves hair and
+fur soft instead of cut out with scissors.
 
 The frontend is a Next.js static export; the backend is an ASP.NET Core minimal API that serves
 those files and runs the model through ONNX Runtime on CPU. Comparing, recolouring and downloading

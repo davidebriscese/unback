@@ -41,6 +41,14 @@ public sealed class ModelOptions
     // u2net family uses the ImageNet mean instead — override these when switching models.
     public float[] Mean { get; set; } = [0.5f, 0.5f, 0.5f];
     public float[] Std { get; set; } = [1f, 1f, 1f];
+
+    // The saliency map is soft wherever the model hesitates - a grey jumper against a grey wall,
+    // a neon shoe on a neon backdrop - so the middle of the subject comes back half transparent.
+    // Stretching [AlphaFloor, AlphaCeiling] over the full alpha range makes confident pixels
+    // opaque and faint ones vanish, while the band between them keeps the soft ramp hair needs.
+    // Set 0 and 1 to get rembg's untouched map back.
+    public float AlphaFloor { get; set; } = 0.15f;
+    public float AlphaCeiling { get; set; } = 0.55f;
 }
 
 public sealed class RateLimitOptions
