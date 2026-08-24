@@ -72,7 +72,7 @@ export const de: Dictionary = {
       },
       {
         title: "Wirklich privat",
-        body: "Bilder werden im Speicher verarbeitet und nie auf die Festplatte geschrieben. Nichts wird gespeichert, getrackt oder geteilt.",
+        body: "Bilder werden im Speicher verarbeitet und nie auf die Festplatte geschrieben - nie gespeichert, nie weitergegeben, nie für Training verwendet.",
       },
       {
         title: "Open Source und selbst hostbar",
@@ -135,7 +135,7 @@ export const de: Dictionary = {
     title: "Datenschutz",
     metaDescription:
       "Wie Unback mit deinen Bildern und Daten umgeht: Verarbeitung im Speicher, keine Speicherung, kein Konto nötig.",
-    updated: "Zuletzt aktualisiert: 2026-08-21",
+    updated: "Zuletzt aktualisiert: 2026-08-24",
     intro:
       "Unback ist so gebaut, dass es fast nichts gibt, worüber man eine Datenschutzerklärung schreiben müsste. Diese Seite erklärt in einfachen Worten, was mit deinen Bildern passiert und welche wenigen Daten der Dienst berührt.",
     sections: [
@@ -153,15 +153,15 @@ export const de: Dictionary = {
       },
       {
         heading: "Cookies und lokaler Speicher",
-        body: "Unback setzt keine Cookies. Der lokale Speicher deines Browsers hält genau einen Wert - deine Wahl zwischen hellem und dunklem Theme - und der verlässt dein Gerät nie.",
+        body: "Google Analytics setzt einige Cookies, damit ein wiederkehrender Besuch nicht als neuer gezählt wird. Davon abgesehen hält der lokale Speicher deines Browsers genau einen Wert - deine Wahl zwischen hellem und dunklem Theme - und der verlässt dein Gerät nie.",
       },
       {
         heading: "Analytics",
-        body: "Diese Instanz verwendet keine Analytics von Drittanbietern.",
+        body: "Diese Instanz nutzt Google Analytics 4, um zu messen, wie stark das Werkzeug tatsächlich genutzt wird: Seitenaufrufe sowie anonyme Ereignisse - ein Bild ausgewählt, ein Hintergrund entfernt, ein Ergebnis heruntergeladen - und wie lange die Verarbeitung gedauert hat. Deine Bilder, ihre Dateinamen und ihre Inhalte sind nie Teil davon. Google erhält deine IP-Adresse, um daraus einen ungefähren Standort abzuleiten, und gibt an, sie nicht zu speichern. Jeder Content-Blocker oder Googles eigenes Opt-out-Add-on hält dich vollständig heraus.",
       },
       {
         heading: "Selbst gehostete Instanzen",
-        body: "Diese Erklärung gilt für die offizielle Instanz auf unback.app. Unback ist Open Source, und selbst gehostete Kopien werden von ihren Betreibern eigenständig verwaltet.",
+        body: "Diese Erklärung gilt für die offizielle Instanz auf unback.app. Unback ist Open Source, und selbst gehostete Kopien werden von ihren Betreibern eigenständig verwaltet - sie messen überhaupt nichts, solange ihr Betreiber Analytics nicht mit einer eigenen Property einschaltet.",
       },
       {
         heading: "Fragen",

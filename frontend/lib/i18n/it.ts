@@ -72,7 +72,7 @@ export const it: Dictionary = {
       },
       {
         title: "Privato davvero",
-        body: "Le immagini sono elaborate in memoria e mai scritte su disco. Niente archivi, niente tracciamenti, niente condivisioni.",
+        body: "Le immagini vengono elaborate in memoria e mai scritte su disco: mai salvate, mai condivise, mai usate per addestrare nulla.",
       },
       {
         title: "Open source e self-hosted",
@@ -135,7 +135,7 @@ export const it: Dictionary = {
     title: "Privacy",
     metaDescription:
       "Come Unback tratta le tue immagini e i tuoi dati: elaborazione in memoria, nessun salvataggio, nessun account richiesto.",
-    updated: "Ultimo aggiornamento: 2026-08-21",
+    updated: "Ultimo aggiornamento: 2026-08-24",
     intro:
       "Unback è costruito in modo che non ci sia quasi nulla su cui scrivere una privacy policy. Questa pagina spiega, in parole semplici, che fine fanno le tue immagini e quali pochi dati tocca il servizio.",
     sections: [
@@ -153,15 +153,15 @@ export const it: Dictionary = {
       },
       {
         heading: "Cookie e archiviazione locale",
-        body: "Unback non imposta cookie. La memoria locale del browser conserva un solo valore - la tua preferenza per il tema chiaro o scuro - che non lascia mai il tuo dispositivo.",
+        body: "Google Analytics imposta qualche cookie, così una visita di ritorno non viene contata come nuova. A parte quelli, la memoria locale del browser conserva un solo valore - la tua preferenza per il tema chiaro o scuro - che non lascia mai il tuo dispositivo.",
       },
       {
         heading: "Analytics",
-        body: "Questa istanza non utilizza analytics di terze parti.",
+        body: "Questa istanza usa Google Analytics 4 per capire quanto lo strumento venga davvero usato: visualizzazioni di pagina ed eventi anonimi - un'immagine selezionata, uno sfondo rimosso, un risultato scaricato - insieme al tempo di elaborazione. Le tue immagini, i loro nomi e il loro contenuto non ne fanno mai parte. Google riceve il tuo indirizzo IP per ricavarne una posizione approssimativa e dichiara di non conservarlo. Qualsiasi content blocker, o il componente aggiuntivo di opt-out di Google, ti tiene completamente fuori.",
       },
       {
         heading: "Istanze self-hosted",
-        body: "Questa policy riguarda l'istanza ufficiale su unback.app. Unback è open source e le copie self-hosted sono gestite in autonomia dai rispettivi proprietari.",
+        body: "Questa policy riguarda l'istanza ufficiale su unback.app. Unback è open source e le copie self-hosted sono gestite in autonomia dai rispettivi proprietari: non misurano nulla, a meno che chi le gestisce non attivi gli analytics su una proprietà propria.",
       },
       {
         heading: "Domande",

@@ -76,7 +76,7 @@ export const en = {
       },
       {
         title: "Actually private",
-        body: "Images are processed in memory and never written to disk. Nothing is stored, tracked or shared.",
+        body: "Images are processed in memory and never written to disk - never stored, never shared, never used for training.",
       },
       {
         title: "Open source, self-hostable",
@@ -139,7 +139,7 @@ export const en = {
     title: "Privacy",
     metaDescription:
       "How Unback handles your images and data: processed in memory, never stored, no account required.",
-    updated: "Last updated: 2026-08-21",
+    updated: "Last updated: 2026-08-24",
     intro:
       "Unback is built so that there is almost nothing to write a privacy policy about. This page explains, plainly, what happens to your images and what little data the service touches.",
     sections: [
@@ -157,15 +157,15 @@ export const en = {
       },
       {
         heading: "Cookies and local storage",
-        body: "Unback sets no cookies. Your browser's local storage keeps a single value - your light/dark theme preference - which never leaves your device.",
+        body: "Google Analytics sets a few cookies so that a returning visit is not counted as a brand new one. Apart from those, your browser's local storage keeps a single value - your light/dark theme preference - which never leaves your device.",
       },
       {
         heading: "Analytics",
-        body: "This instance does not run third-party analytics.",
+        body: "This instance uses Google Analytics 4 to measure how much the tool is actually used: page views, plus anonymous events - an image selected, a background removed, a result downloaded - and how long processing took. Your images, their file names and their contents are never part of it. Google receives your IP address to derive an approximate location and states that it does not store it. Any content blocker, or Google's own opt-out add-on, keeps you out of it entirely.",
       },
       {
         heading: "Self-hosted instances",
-        body: "This policy covers the official instance at unback.app. Unback is open source, and self-hosted copies are operated independently by their owners.",
+        body: "This policy covers the official instance at unback.app. Unback is open source, and self-hosted copies are operated independently by their owners - they measure nothing at all unless their operator switches analytics on with a property of their own.",
       },
       {
         heading: "Questions",

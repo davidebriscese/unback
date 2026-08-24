@@ -72,7 +72,7 @@ export const es: Dictionary = {
       },
       {
         title: "Privado de verdad",
-        body: "Las imágenes se procesan en memoria y nunca se escriben en disco. Nada se guarda, se rastrea ni se comparte.",
+        body: "Las imágenes se procesan en memoria y nunca se escriben en disco: nunca se guardan, nunca se comparten, nunca se usan para entrenar nada.",
       },
       {
         title: "Código abierto y autoalojable",
@@ -135,7 +135,7 @@ export const es: Dictionary = {
     title: "Privacidad",
     metaDescription:
       "Cómo trata Unback tus imágenes y tus datos: procesamiento en memoria, sin almacenamiento y sin necesidad de cuenta.",
-    updated: "Última actualización: 2026-08-21",
+    updated: "Última actualización: 2026-08-24",
     intro:
       "Unback está construido para que apenas haya nada sobre lo que escribir una política de privacidad. Esta página explica, con claridad, qué pasa con tus imágenes y qué pocos datos toca el servicio.",
     sections: [
@@ -153,15 +153,15 @@ export const es: Dictionary = {
       },
       {
         heading: "Cookies y almacenamiento local",
-        body: "Unback no usa cookies. El almacenamiento local de tu navegador guarda un único valor - tu preferencia de tema claro u oscuro - que nunca sale de tu dispositivo.",
+        body: "Google Analytics instala unas pocas cookies para que una visita recurrente no se cuente como nueva. Aparte de esas, el almacenamiento local de tu navegador guarda un único valor - tu preferencia de tema claro u oscuro - que nunca sale de tu dispositivo.",
       },
       {
         heading: "Analítica",
-        body: "Esta instancia no utiliza analítica de terceros.",
+        body: "Esta instancia usa Google Analytics 4 para medir cuánto se usa realmente la herramienta: páginas vistas y eventos anónimos - una imagen seleccionada, un fondo eliminado, un resultado descargado - junto al tiempo de procesamiento. Tus imágenes, sus nombres de archivo y su contenido nunca forman parte de eso. Google recibe tu dirección IP para deducir una ubicación aproximada y declara que no la almacena. Cualquier bloqueador de contenido, o el complemento de exclusión del propio Google, te deja fuera por completo.",
       },
       {
         heading: "Instancias autoalojadas",
-        body: "Esta política cubre la instancia oficial en unback.app. Unback es de código abierto y las copias autoalojadas las gestionan de forma independiente sus propietarios.",
+        body: "Esta política cubre la instancia oficial en unback.app. Unback es de código abierto y las copias autoalojadas las gestionan de forma independiente sus propietarios: no miden nada, salvo que quien las administra active la analítica con una propiedad propia.",
       },
       {
         heading: "Preguntas",

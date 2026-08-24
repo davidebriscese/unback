@@ -72,7 +72,7 @@ export const fr: Dictionary = {
       },
       {
         title: "Vraiment privé",
-        body: "Les images sont traitées en mémoire et jamais écrites sur disque. Rien n'est conservé, suivi ni partagé.",
+        body: "Les images sont traitées en mémoire et jamais écrites sur disque : jamais stockées, jamais partagées, jamais utilisées pour entraîner quoi que ce soit.",
       },
       {
         title: "Open source et auto-hébergeable",
@@ -135,7 +135,7 @@ export const fr: Dictionary = {
     title: "Confidentialité",
     metaDescription:
       "Comment Unback traite vos images et vos données : traitement en mémoire, aucun stockage, aucun compte requis.",
-    updated: "Dernière mise à jour : 2026-08-21",
+    updated: "Dernière mise à jour : 2026-08-24",
     intro:
       "Unback est conçu pour qu'il n'y ait presque rien à écrire dans une politique de confidentialité. Cette page explique simplement ce que deviennent vos images et le peu de données que le service manipule.",
     sections: [
@@ -153,15 +153,15 @@ export const fr: Dictionary = {
       },
       {
         heading: "Cookies et stockage local",
-        body: "Unback ne dépose aucun cookie. Le stockage local de votre navigateur conserve une seule valeur - votre préférence de thème clair ou sombre - qui ne quitte jamais votre appareil.",
+        body: "Google Analytics dépose quelques cookies afin qu'une visite récurrente ne soit pas comptée comme nouvelle. En dehors de ceux-ci, le stockage local de votre navigateur conserve une seule valeur - votre préférence de thème clair ou sombre - qui ne quitte jamais votre appareil.",
       },
       {
         heading: "Mesure d'audience",
-        body: "Cette instance n'utilise aucun outil de mesure d'audience tiers.",
+        body: "Cette instance utilise Google Analytics 4 pour mesurer l'usage réel de l'outil : pages vues et événements anonymes - une image sélectionnée, un fond détouré, un résultat téléchargé - ainsi que la durée du traitement. Vos images, leurs noms de fichier et leur contenu n'en font jamais partie. Google reçoit votre adresse IP pour en déduire une localisation approximative et déclare ne pas la conserver. N'importe quel bloqueur de contenu, ou le module de désinscription de Google lui-même, vous en exclut totalement.",
       },
       {
         heading: "Instances auto-hébergées",
-        body: "Cette politique couvre l'instance officielle sur unback.app. Unback est open source, et les copies auto-hébergées sont gérées de façon indépendante par leurs propriétaires.",
+        body: "Cette politique couvre l'instance officielle sur unback.app. Unback est open source, et les copies auto-hébergées sont gérées de façon indépendante par leurs propriétaires : elles ne mesurent rien, à moins que leur exploitant n'active la mesure d'audience avec sa propre propriété.",
       },
       {
         heading: "Questions",

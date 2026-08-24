@@ -20,8 +20,8 @@ one container you can run yourself.
 
 - **Actually free.** No sign-up, no quota to buy. Fair-use rate limits, and you can lift them on
   your own instance.
-- **Actually private.** Images are decoded, processed and discarded inside a single request. Nothing
-  is stored, logged or used for training.
+- **Actually private.** Images are decoded, processed and discarded inside a single request. No
+  image is ever stored, logged or used for training.
 - **One container.** The web page and the API are the same process on the same origin.
 - **Runs on CPU.** No GPU required; roughly a second or two per image on a modern core.
 
@@ -126,6 +126,7 @@ Every setting is an environment variable. The `Unback__` prefix mirrors the JSON
 | `Unback__InferenceQueueTimeoutSeconds` | `10` | How long a request waits for a slot before a 503 |
 | `Unback__RequestTimeoutSeconds` | `60` | Wall-clock budget per request; raise it on slow hardware |
 | `Unback__AllowedOrigins__0` | *(unset)* | Lock CORS to specific origins. Unset means any origin |
+| `Unback__Analytics__MeasurementId` | *(unset)* | GA4 measurement ID, `G-XXXXXXXXXX`. Unset means no analytics at all |
 | `Unback__Model__Name` | `isnet-general-use` | Model file name, without `.onnx` |
 | `Unback__Model__Url` | *(see appsettings)* | Where to fetch it on first start |
 | `Unback__Model__Sha256` | *(see appsettings)* | Expected checksum. Empty string disables the check |
@@ -157,6 +158,20 @@ yourself with your host:
 ```bash
 docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your.domain -t unback .
 ```
+
+**Analytics.** Off unless you turn it on, and the image carries nobody's measurement ID - not even
+the official instance's, which supplies its own at runtime like any other deployment. Point it at
+your own GA4 property with one environment variable:
+
+```bash
+docker run -e Unback__Analytics__MeasurementId=G-XXXXXXXXXX -p 8080:8080 unback
+```
+
+The app then serves `/analytics.js` with Google's tag; leave the variable unset and that file is
+empty, so no third-party request is ever made. Page views plus a handful of anonymous events (an
+image selected, a background removed, a result downloaded, and how long inference took) are
+reported - never a file name, never image content. Bear in mind that Google Analytics sets cookies:
+if you serve visitors in the EU, consent is your responsibility as the operator.
 
 ## Models and their licences
 
