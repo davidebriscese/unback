@@ -223,8 +223,8 @@ Unback is MIT licensed. Its dependencies:
   deliberately: later versions changed those terms.
 - **Model weights** — see the table above. The default is Apache-2.0.
 
-Demo photos in `frontend/public/samples/` are from Unsplash under the
-[Unsplash License](https://unsplash.com/license), by
+Demo photos in `frontend/public/samples/`, and the animation at the top of this file, are from
+Unsplash under the [Unsplash License](https://unsplash.com/license), by
 [Jurica Koletić](https://unsplash.com/@juricakoletic),
 [USAMA AKRAM](https://unsplash.com/@usama_1248) and
 [Richard Brutyo](https://unsplash.com/@richardbrutyo).
