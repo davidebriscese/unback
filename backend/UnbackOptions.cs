@@ -1,4 +1,4 @@
-namespace Unback;
+﻿namespace Unback;
 
 public sealed class UnbackOptions
 {
@@ -23,6 +23,19 @@ public sealed class UnbackOptions
 
     /// <summary>Allowed CORS origins. Empty = any origin, which is what a public keyless API wants.</summary>
     public string[] AllowedOrigins { get; set; } = [];
+
+    public AnalyticsOptions Analytics { get; set; } = new();
+}
+
+public sealed class AnalyticsOptions
+{
+    /// <summary>
+    /// GA4 measurement ID, "G-XXXXXXXXXX". Empty - the default - serves no tag at all, so an
+    /// instance measures nothing until whoever runs it points this at their own property. Runtime
+    /// configuration on purpose: a build-time value would have to live in the repository to reach
+    /// production, and would then ride along into every published image.
+    /// </summary>
+    public string MeasurementId { get; set; } = string.Empty;
 }
 
 public sealed class ModelOptions

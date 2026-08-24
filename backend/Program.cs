@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -143,7 +143,19 @@ var app = builder.Build();
 // and the error responses too. Registered first and applied via OnStarting so they survive the
 // Response.Clear() the exception handler performs before writing an error body.
 // 'unsafe-inline' is required by the static export: the theme script and JSON-LD are inline, and
-// the tool applies inline styles (the comparison clip-path, the gradient). No other host is allowed.
+// the tool applies inline styles (the comparison clip-path, the gradient).
+// Google's tag hosts are the only third party allowed, and only because the official instance
+// loads gtag.js. A self-hosted build never reaches for them: the frontend gates the tag on the
+// canonical hostname, so on any other domain these entries are inert.
+const string contentSecurityPolicy =
+    "default-src 'self'; "
+    + "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com; "
+    + "style-src 'self' 'unsafe-inline'; "
+    + "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; "
+    + "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com "
+    + "https://*.googletagmanager.com; "
+    + "font-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'";
+
 app.Use((context, next) =>
 {
     context.Response.OnStarting(() =>
@@ -152,10 +164,7 @@ app.Use((context, next) =>
         headers["X-Content-Type-Options"] = "nosniff";
         headers["Referrer-Policy"] = "no-referrer";
         headers["X-Frame-Options"] = "DENY";
-        headers.ContentSecurityPolicy =
-            "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; "
-            + "script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; base-uri 'self'; "
-            + "form-action 'self'; frame-ancestors 'none'; object-src 'none'";
+        headers.ContentSecurityPolicy = contentSecurityPolicy;
         return Task.CompletedTask;
     });
     return next();
@@ -198,6 +207,8 @@ if (!app.Environment.IsEnvironment("Testing"))
 }
 
 app.MapOpenApi("/openapi/v1.json");
+
+app.MapAnalyticsScript();
 
 app.MapGet("/healthz", (IBackgroundRemover bg) => new HealthResponse("ok", bg.ModelName, version))
     .WithTags("Service")
