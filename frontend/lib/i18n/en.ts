@@ -23,7 +23,7 @@ export const en = {
     titleLead: "Remove image backgrounds",
     titleAccent: "in seconds",
     subtitle:
-      "Upload a photo, get a transparent PNG. No signup, no watermark, no credits - and no image ever stored.",
+      "Upload a photo, get a transparent PNG. No signup, no watermark, no credits, and no image ever stored.",
   },
 
   tool: {

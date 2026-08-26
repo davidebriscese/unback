@@ -22,7 +22,7 @@ export function LocaleSwitcher({ active, label }: { active: Locale; label: strin
     <Menu.Root>
       <Menu.Trigger
         aria-label={label}
-        className="inline-flex items-center gap-2 rounded-lg border bg-card px-2.5 py-1.5 text-sm shadow-sm transition-colors outline-none select-none hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-popup-open:bg-muted"
+        className="inline-flex items-center gap-2 w-fit place-self-end md:place-self-auto rounded-lg border bg-card px-2.5 py-1.5 text-sm shadow-sm transition-colors outline-none select-none hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-popup-open:bg-muted"
       >
         <Languages className="size-4 shrink-0" />
         {localeInfo[active].nativeName}
