@@ -4,7 +4,7 @@
 
 # Unback
 
-**Free, open-source background removal. Your images never leave your server.**
+Open-source background removal you can self-host.
 
 [![CI](https://github.com/davidebriscese/unback/actions/workflows/ci.yml/badge.svg)](https://github.com/davidebriscese/unback/actions/workflows/ci.yml)
 [![Release](https://github.com/davidebriscese/unback/actions/workflows/release.yml/badge.svg)](https://github.com/davidebriscese/unback/actions/workflows/release.yml)
@@ -14,16 +14,15 @@
 
 </div>
 
-Upload a photo, get a transparent PNG. No account, no credits, no watermark — and no image is ever
+Upload a photo, get a transparent PNG. No account, no credits, no watermark, and no image is ever
 written to disk. There is a web page for people and a plain HTTP API for programs, and both come in
 one container you can run yourself.
 
-- **Actually free.** No sign-up, no quota to buy. Fair-use rate limits, and you can lift them on
-  your own instance.
-- **Actually private.** Images are decoded, processed and discarded inside a single request. No
-  image is ever stored, logged or used for training.
+- **No sign-up, no quota to buy.** Fair-use rate limits, which you can lift on your own instance.
+- **Nothing is stored.** Images are decoded, processed and discarded inside a single request; no
+  image is written to disk, logged or used for training.
 - **One container.** The web page and the API are the same process on the same origin.
-- **Runs on CPU.** No GPU required; roughly a second or two per image on a modern core.
+- **Runs on CPU.** No GPU required; roughly a second or two per image on a modern computer.
 
 ---
 
@@ -48,11 +47,11 @@ Drop an image, click to pick one, or paste with `Ctrl+V`. You get a before/after
 solid background colour (composited in your browser, so it costs no extra request), and a download
 button. English lives at `/`; German, Spanish, French, Italian, Japanese, Portuguese, Russian and
 Chinese live at `/de`, `/es`, `/fr`, `/it`, `/ja`, `/pt`, `/ru` and `/zh`. Adding a language is one
-dictionary file — see [CONTRIBUTING.md](CONTRIBUTING.md).
+dictionary file; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## The API
 
-One endpoint. Send an image, get a transparent PNG.
+One endpoint: send an image, get a transparent PNG.
 
 ```bash
 curl -F "file=@photo.jpg" http://localhost:8080/api/v1/remove -o unback.png
@@ -83,7 +82,7 @@ with the background made transparent. Up to 15MB and 25 megapixels; JPEG, PNG, W
 TIFF are accepted.
 
 Failures answer JSON: `{"code": "…", "error": "…"}`. Branch on `code`, show `error` to nobody but
-yourself — it is always English.
+yourself: it is always English.
 
 | Status | `code` | Meaning |
 | --- | --- | --- |
@@ -98,14 +97,14 @@ yourself — it is always English.
 | 429 | `daily_limit_reached` | Daily fair-use cap; see `Retry-After` |
 | 503 | `server_busy` | Inference queue full; see `Retry-After` |
 | 504 | `timeout` | Processing exceeded the request budget |
-| 500 | `internal_error` | Something broke — please open an issue |
+| 500 | `internal_error` | Something broke; please open an issue |
 
 Unknown routes under `/api` answer `404 not_found`. A request far beyond the size limit may have its
 connection reset mid-upload before any JSON body is readable, so always check the status before
 parsing.
 
 **Fair use.** A public instance allows 10 requests per minute and 100 per day, per IP address. No key
-is needed, and none is offered: if you need more, run your own instance — that is the whole point.
+is needed, and none is offered: if you need more, run your own instance.
 
 Other endpoints: `GET /healthz` reports the loaded model and version, and `GET /openapi/v1.json`
 is the machine-readable spec.
@@ -141,7 +140,7 @@ Every setting is an environment variable. The `Unback__` prefix mirrors the JSON
 
 **Behind a reverse proxy**, set `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true` so rate limits key on the
 real client IP instead of the proxy's. Only do this when the container is reachable *exclusively*
-through a proxy that overwrites `X-Forwarded-For` itself — otherwise anyone can forge the header and
+through a proxy that overwrites `X-Forwarded-For` itself, otherwise anyone can forge the header and
 walk around the limits.
 
 **Bind mounts** for `/app/Models` need to be writable by the container user: `chown 1654 <dir>`.
@@ -187,7 +186,7 @@ The model is downloaded at runtime, not baked into the image, so swapping it is 
 
 To switch, point `Unback__Model__Url` and `Unback__Model__Name` at another file and set
 `Unback__Model__InputSize`, `Unback__Model__Mean` and `Unback__Model__Std` to the values that model was
-trained with — [rembg's session definitions](https://github.com/danielgatis/rembg) are the reference.
+trained with; [rembg's session definitions](https://github.com/danielgatis/rembg) are the reference.
 Clear `Unback__Model__Sha256` (or set the new file's checksum) or startup will reject the download.
 
 ## How it works
@@ -203,8 +202,8 @@ browser ──► Kestrel ──┬──► static export (wwwroot)   the page,
 ```
 
 The levels step is the one place Unback departs from rembg. The model is only ever *confident* about
-the subject, never certain, so its raw map leaves the middle of a low-contrast subject — a grey
-jumper on a grey wall — sitting around 85% opaque, which reads as a see-through cut-out. Clamping
+the subject, never certain, so its raw map leaves the middle of a low-contrast subject (a grey
+jumper on a grey wall) sitting around 85% opaque, which reads as a see-through cut-out. Clamping
 everything above `AlphaCeiling` to solid fixes that; keeping a ramp below it is what leaves hair and
 fur soft instead of cut out with scissors.
 
@@ -225,18 +224,18 @@ dotnet run --project backend
 npm install --prefix frontend && npm run dev --prefix frontend
 ```
 
-Adding a language is one dictionary file and one registry entry — TypeScript reports anything you
+Adding a language is one dictionary file and one registry entry. TypeScript reports anything you
 miss, and the backend picks up the new page on its own.
 
 ## Licences
 
 Unback is MIT licensed. Its dependencies:
 
-- **ONNX Runtime** — MIT.
-- **SixLabors.ImageSharp 3.1.x** — Six Labors Split License 1.0, which grants Apache-2.0 terms when
+- **ONNX Runtime**: MIT.
+- **SixLabors.ImageSharp 3.1.x**: Six Labors Split License 1.0, which grants Apache-2.0 terms when
   the consuming software is open source. Unback qualifies, and the dependency is pinned to 3.1.x
   deliberately: later versions changed those terms.
-- **Model weights** — see the table above. The default is Apache-2.0.
+- **Model weights**: see the table above. The default is Apache-2.0.
 
 Demo photos in `frontend/public/samples/`, and the animation at the top of this file, are from
 Unsplash under the [Unsplash License](https://unsplash.com/license), by
@@ -246,5 +245,5 @@ Unsplash under the [Unsplash License](https://unsplash.com/license), by
 
 ## Contributing
 
-Issues, translations and focused pull requests are welcome — start with
+Issues, translations and focused pull requests are welcome; start with
 [CONTRIBUTING.md](CONTRIBUTING.md). For security reports, see [SECURITY.md](SECURITY.md).
