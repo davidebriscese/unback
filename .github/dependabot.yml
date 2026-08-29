@@ -26,6 +26,16 @@ updates:
       npm:
         patterns: ["*"]
         update-types: [minor, patch]
+    ignore:
+      # eslint-config-next still bundles an eslint-plugin-react built against the ESLint 9 rule
+      # API, so ESLint 10 crashes on every file. Drop this once Next ships a compatible config.
+      - dependency-name: eslint
+        update-types:
+          - version-update:semver-major
+      # typescript-eslint refuses to load under TS 7. Drop this once it supports TS >= 7.1.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: /
