@@ -2,7 +2,7 @@
 
 # The web app is exported to static files and served by the API itself, so the whole product
 # is one container on one origin.
-FROM node:22-alpine AS frontend
+FROM node:26-alpine AS frontend
 WORKDIR /src
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
