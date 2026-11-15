@@ -2,7 +2,7 @@
 
 # The web app is exported to static files and served by the API itself, so the whole product
 # is one container on one origin.
-FROM node:22-alpine AS frontend
+FROM node:26-alpine AS frontend
 WORKDIR /src
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
@@ -11,7 +11,7 @@ ARG NEXT_PUBLIC_SITE_URL=https://unback.app
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npm run build
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS backend
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS backend
 ARG TARGETARCH
 ARG VERSION=0.0.0-dev
 WORKDIR /src
@@ -23,7 +23,7 @@ RUN dotnet publish -a $TARGETARCH -c Release --no-restore -o /app \
     -p:UseAppHost=false -p:Version=$VERSION
 
 # Debian, not Alpine: ONNX Runtime ships no musl natives.
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+FROM mcr.microsoft.com/dotnet/aspnet:11.0
 LABEL org.opencontainers.image.source="https://github.com/davidebriscese/unback" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.title="Unback" \
